@@ -1,6 +1,36 @@
 ﻿<h1>Accounts</h1>
 <p>All accounts from secure (admin only) api end point:</p>
 <a routerLink="add" class="btn btn-sm btn-success mb-2">Create Account</a>
+<h2>Accounts</h2>
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="text-center flex-grow-1" *ngIf="showActivityLogs">Activity Logs</h2>
+    <button (click)="toggleActivityLogs()" class="btn btn-primary">
+        {{ showActivityLogs ? 'Hide Activity Logs' : 'Show Activity Logs' }}
+    </button>
+</div>
+
+<div *ngIf="showActivityLogs">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Action Type</th>
+                <th>IP Address</th>
+                <th>Browser Info</th>
+                <th>Details</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let log of activityLogs">
+                <td>{{ log.actionType }}</td>
+                <td>{{ log.ipAddress }}</td>
+                <td>{{ log.browserInfo }}</td>
+                <td>{{ log.details }}</td>
+                <td>{{ log.timestamp | date:'short' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 <table class="table table-striped">
     <thead>
         <tr>
