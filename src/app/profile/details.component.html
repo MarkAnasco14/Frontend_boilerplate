@@ -1,6 +1,32 @@
 ﻿<h1>My Profile</h1>
+<h2>Accounts</h2>
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="text-center flex-grow-1" *ngIf="showActivityLogs">Activity Logs</h2>
+    <button (click)="toggleActivityLogs()" class="btn btn-primary">
+        {{ showActivityLogs ? 'Hide Activity Logs' : 'Show Activity Logs' }}
+    </button>
+</div>
+
+<div *ngIf="showActivityLogs">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Action Type</th>
+                <th>Details</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let log of activityLogs">
+                <td>{{ log.actionType }}</td>
+                <td>{{ log.actionDetails }}</td>
+                <td>{{ log.timestamp | date:'short' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 <p *ngIf="account">
     <strong>Name: </strong> {{account.title}} {{account.firstName}} {{account.lastName}}<br />
     <strong>Email: </strong> {{account.email}}
 </p>
-<p><a routerLink="update">Update Profile</a></p>
+<p><a routerLink="update" class="btn btn-sm btn-success mb-2">Update Profile</a></p>
