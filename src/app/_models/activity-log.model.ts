@@ -1,8 +1,6 @@
 export interface ActivityLog {
   actionType: string;
-  ipAddress: string;
-  browserInfo: string;
-  details: string;
+  actionDetails:string;
   timestamp: string;
 }
 

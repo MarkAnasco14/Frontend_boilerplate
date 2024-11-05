@@ -14,8 +14,6 @@
         <thead>
             <tr>
                 <th>Action Type</th>
-                <th>IP Address</th>
-                <th>Browser Info</th>
                 <th>Details</th>
                 <th>Timestamp</th>
             </tr>
@@ -23,9 +21,7 @@
         <tbody>
             <tr *ngFor="let log of activityLogs">
                 <td>{{ log.actionType }}</td>
-                <td>{{ log.ipAddress }}</td>
-                <td>{{ log.browserInfo }}</td>
-                <td>{{ log.details }}</td>
+                <td>{{ log.actionDetails }}</td>
                 <td>{{ log.timestamp | date:'short' }}</td>
             </tr>
         </tbody>

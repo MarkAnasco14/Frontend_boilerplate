@@ -22,8 +22,8 @@ export class ListComponent implements OnInit {
             this.getActivityLogs(accountId);
     }
 
-    getActivityLogs(accountId: string) {
-        this.accountService.getActivityLogs(accountId)
+    getActivityLogs(AccountId: string) {
+        this.accountService.getActivityLogs(AccountId)
             .subscribe(
                 (logs) => {
                     console.log('Fetched logs:', logs); // Log entire logs response
