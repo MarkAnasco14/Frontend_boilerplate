@@ -1,0 +1,39 @@
+<div class="p-4">
+    <div class="container">
+        <router-outlet>
+            <h1>Branches</h1>
+<p>All branches from secure (admin only) API endpoint:</p>
+<a routerLink="add" data-bs-toggle="modal" class="btn btn-sm btn-success mb-2">Create Branch</a>
+  
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width:30%">Branch Name</th>
+            <th style="width:30%">Location</th>
+            <th style="width:30%">Status</th>
+            <th style="width:10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let branch of branches">
+            <td class="align-middle">{{ branch.name }}</td>
+            <td class="align-middle">{{ branch.location }}</td>
+            <td class="align-middle">{{ branch.branchStatus }}</td>
+            <td style="white-space: nowrap">
+                <a routerLink="edit/{{ branch.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
+                <button (click)="deleteBranch(branch.id)" class="btn btn-sm btn-danger btn-delete-branch" [disabled]="branch.isDeleting">
+                    <span *ngIf="branch.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!branch.isDeleting">Delete</span>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="!branches">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+        </router-outlet>
+    </div>
+</div>

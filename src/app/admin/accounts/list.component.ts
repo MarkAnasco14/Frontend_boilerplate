@@ -2,14 +2,10 @@
 import { first } from 'rxjs/operators';
 
 import { AccountService } from '@app/_services';
-import { ActivityLog } from '@app/_models/activity-log.model';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     accounts?: any[];
-    activityLogs: ActivityLog[] = [];
-    showActivityLogs = false; // Initialize it
-
 
     constructor(private accountService: AccountService) { }
 
@@ -18,24 +14,6 @@ export class ListComponent implements OnInit {
             .pipe(first())
             .subscribe(accounts => this.accounts = accounts);
 
-            const accountId = this.accountService.accountValue?.id!;
-            this.getActivityLogs(accountId);
-    }
-
-    getActivityLogs(AccountId: string) {
-        this.accountService.getActivityLogs(AccountId)
-            .subscribe(
-                (logs) => {
-                    console.log('Fetched logs:', logs); // Log entire logs response
-                    this.activityLogs = logs;
-                },
-                (error) => {
-                    console.error('Error fetching activity logs:', error);
-                }
-            );
-    }
-    toggleActivityLogs() {
-        this.showActivityLogs = !this.showActivityLogs; // Toggle visibility
     }
 
     deleteAccount(id: string) {
