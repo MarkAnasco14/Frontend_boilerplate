@@ -21,10 +21,20 @@
             <td class="align-middle">{{ branch.branchStatus }}</td>
             <td style="white-space: nowrap">
                 <a routerLink="edit/{{ branch.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
-                <button (click)="deleteBranch(branch.id)" class="btn btn-sm btn-danger btn-delete-branch" [disabled]="branch.isDeleting">
-                    <span *ngIf="branch.isDeleting" class="spinner-border spinner-border-sm"></span>
-                    <span *ngIf="!branch.isDeleting">Delete</span>
-                </button>
+                <button (click)="toggleDeactivateReactivateBranch(branch.id)" 
+                [ngClass]="{'btn-danger': branch.branchStatus !== 'deactivated', 'btn-success': branch.branchStatus === 'deactivated'}" 
+                class="btn btn-sm btn-put-branch me-1">
+            <span *ngIf="branch.isDeactivating || branch.isReactivating" class="spinner-border spinner-border-sm"></span>
+            <span *ngIf="branch.branchStatus !== 'deactivated'">Deactivate</span>
+            <span *ngIf="branch.branchStatus === 'deactivated'">Reactivate</span>
+        </button>
+              <!-- Show Delete button only when branchStatus is 'deactivated' -->
+               <button *ngIf="branch.branchStatus === 'deactivated'" (click)="deleteBranch(branch.id)" 
+                       class="btn btn-sm btn-danger btn-delete-branch" 
+                       [disabled]="branch.isDeleting">
+                      <span *ngIf="branch.isDeleting" class="spinner-border spinner-border-sm"></span>
+                      <span *ngIf="!branch.isDeleting">Delete</span>
+               </button>
             </td>
         </tr>
         <tr *ngIf="!branches">
