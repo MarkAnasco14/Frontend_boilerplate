@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
+declare var bootstrap: any;
 
 import { BranchService , AccountService, AlertService} from '@app/_services';
 import { Account, Branch } from '@app/_models';
@@ -10,6 +11,8 @@ export class BranchListComponent implements OnInit {
     accounts?: Account[];
     selectedBranchId: string = '';
     selectedAccountId: string = '';
+    branchDetails?: Branch; // Variable to hold branch details
+    errorMessage: string = '';  // Property for error message
 
     constructor(
         private branchService: BranchService,
@@ -82,6 +85,29 @@ export class BranchListComponent implements OnInit {
                         this.alertService.error('only manager can be assign to branch');
                     }
                 });
+        }
+    }
+    openBranchDetailsModal() {
+        const modalElement = document.getElementById('branchDetailsModal');
+        if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        }
+    }
+    getBranchDetails() {
+        this.errorMessage = '';  // Reset error message before API call
+        if (this.selectedBranchId) {
+            this.branchService.getBranchById(this.selectedBranchId).pipe(first()).subscribe({
+                next: (branch) => {
+                    this.branchDetails = branch;
+                    this.errorMessage = '';  // Clear any previous error
+                },
+                error: () => {
+                    this.alertService.error('Error fetching branch details');
+                }
+            });
+        } else {
+            this.alertService.error('Please select a branch');
         }
     }
 }
