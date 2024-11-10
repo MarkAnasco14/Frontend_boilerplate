@@ -25,7 +25,7 @@ export class BranchService {
                 this.branchesSubject.next(branches);
                 return branches;
             }));
-    }
+    } 
 
     getBranchById(id: string) {
         return this.http.get<Branch>(`${baseUrl}/${id}`);
@@ -43,8 +43,8 @@ export class BranchService {
         return this.http.delete(`${baseUrl}/${id}`);
     }
 
-    assignUserToBranch(branchId: string, accountId: string) {
-        return this.http.post(`${baseUrl}/${branchId}/assign/${accountId}`, {});
+    assignUserToBranch(branchId: string, AccountId: string) {
+        return this.http.post(`${baseUrl}/${branchId}/assign/${AccountId}`, {});
     }
 
     removeUserFromBranch(branchId: string, accountId: string) {

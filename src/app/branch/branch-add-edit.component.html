@@ -20,13 +20,6 @@
         </div>
     </div>
     <div class="mb-3">
-        <label class="form-label">Status</label>
-        <select formControlName="isActive" class="form-select" [ngClass]="{ 'is-invalid': submitted && f.isActive.errors }">
-            <option [ngValue]="true">Active</option>
-            <option [ngValue]="false">Inactive</option>
-        </select>
-    </div>
-    <div class="mb-3">
         <button [disabled]="submitting" class="btn btn-primary">
             <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
             Save

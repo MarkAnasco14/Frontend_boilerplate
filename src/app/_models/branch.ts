@@ -1,8 +1,9 @@
+import { Account} from '@app/_models';
+
 export interface Branch {
     id: string;
     name: string;
     location: string;
-    isActive: boolean;
-    isDeactivating?: boolean;
-    isReactivating?: boolean;
+    branchStatus: string;
+    Accounts: Account[]; // Accounts is an array of Account objects
 }

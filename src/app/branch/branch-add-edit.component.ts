@@ -28,7 +28,6 @@ export class BranchAddEditComponent implements OnInit {
         this.form = this.formBuilder.group({
             name: ['', Validators.required],
             location: ['', Validators.required],
-            isActive: [true]
         });
 
         this.title = 'Create Branch';
