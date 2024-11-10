@@ -1,21 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { BranchService , AlertService} from '@app/_services';
+import { BranchService , AccountService, AlertService} from '@app/_services';
+import { Account, Branch } from '@app/_models';
 
 @Component({ templateUrl: 'branch-list.component.html' })
 export class BranchListComponent implements OnInit {
     branches?: any[];
+    accounts?: Account[];
+    selectedBranchId: string = '';
+    selectedAccountId: string = '';
 
-    constructor(private branchService: BranchService,
+    constructor(
+        private branchService: BranchService,
+        private accountService: AccountService,
         private alertService: AlertService
     ) { }
     
 
     ngOnInit() {
-        this.branchService.getAllBranches()
-            .pipe(first())
-            .subscribe(branches => this.branches = branches);
+        this.branchService.getAllBranches().pipe(first()).subscribe(branches => (this.branches = branches));
+        this.accountService.getAll().pipe(first()).subscribe(accounts => (this.accounts = accounts));
     }
 
     toggleDeactivateReactivateBranch(id: string) {
@@ -61,6 +66,21 @@ export class BranchListComponent implements OnInit {
                 }, (error) => {
                     branch.isDeleting = false;
                     this.alertService.error('Error deleting branch');
+                });
+        }
+    }
+    assignUserToBranch() {
+        if (this.selectedBranchId && this.selectedAccountId) {
+            this.branchService
+                .assignUserToBranch(this.selectedBranchId, this.selectedAccountId)
+                .pipe(first())
+                .subscribe({
+                    next: () => {
+                        this.alertService.success('User assigned to branch successfully');
+                    },
+                    error: () => {
+                        this.alertService.error('only manager can be assign to branch');
+                    }
                 });
         }
     }

@@ -70,11 +70,16 @@ export class AccountService {
     resetPassword(token: string, password: string, confirmPassword: string) {
         return this.http.post(`${baseUrl}/reset-password`, { token, password, confirmPassword });
     }
+     
+     // Get all accounts (for dropdown in branch assignment)
+     getAllAccounts(): Observable<Account[]> {
+        return this.http.get<Account[]>(baseUrl);
+    }
 
     getAll() {
         return this.http.get<Account[]>(baseUrl);
     }
-
+    
     getById(id: string) {
         return this.http.get<Account>(`${baseUrl}/${id}`);
     }

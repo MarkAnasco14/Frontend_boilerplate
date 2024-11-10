@@ -3,7 +3,56 @@
         <router-outlet>
             <h1>Branches</h1>
 <p>All branches from secure (admin only) API endpoint:</p>
-<a routerLink="add" data-bs-toggle="modal" class="btn btn-sm btn-success mb-2">Create Branch</a>
+
+
+
+<!-- Button to Open Modal -->
+<div class="container">
+    <div class="row">
+        <!-- Column for the table content -->
+        <div class="col">
+            <table class="table table-striped">
+                <a routerLink="add" data-bs-toggle="modal" class="btn btn-sm btn-success mb-2">Create Branch</a>
+            </table>
+        </div>
+
+        <!-- Column for the button on the right -->
+        <div class="col-auto">
+            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#assignUserModal">
+                Assign User to Branch
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Assign User Modal -->
+<div class="modal fade" id="assignUserModal" tabindex="-1" aria-labelledby="assignUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignUserModalLabel">Assign User to Branch</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="assignUserToBranch()" #assignForm="ngForm">
+                    <div class="mb-3">
+                        <label for="branchSelect" class="form-label">Select Branch</label>
+                        <select [(ngModel)]="selectedBranchId" name="branchSelect" class="form-select" required>
+                            <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="accountSelect" class="form-label">Select User</label>
+                        <select [(ngModel)]="selectedAccountId" name="accountSelect" class="form-select" required>
+                            <option *ngFor="let account of accounts" [value]="account.id">{{ account.firstName }}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid">Assign</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
   
 <table class="table table-striped">
     <thead>
