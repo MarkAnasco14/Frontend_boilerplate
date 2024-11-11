@@ -8,4 +8,5 @@ export class Account {
     email?: string;
     role?: Role;
     jwtToken?: string;
+    manager?: Account; // Optional, if the user has a manager
 }

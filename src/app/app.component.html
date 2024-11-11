@@ -1,8 +1,8 @@
 ﻿<!-- Top Navbar for User -->
-<nav *ngIf="account?.role === Role.User" class="navbar navbar-expand navbar-dark bg-dark px-3 fixed-top">
+<nav *ngIf="account?.role === Role.Manager" class="navbar navbar-expand navbar-dark bg-dark px-3 fixed-top">
     <div class="navbar-nav w-100">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Home</a>
-        <a routerLink="/branch" routerLinkActive="active" class="nav-item nav-link">branch</a>
+        <a *ngIf="account?.role === 'Manager'" routerLink="/branch" routerLinkActive="active" class="nav-item nav-link">Branch</a>
         <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
 
         <!-- Display Branch Information if available -->
