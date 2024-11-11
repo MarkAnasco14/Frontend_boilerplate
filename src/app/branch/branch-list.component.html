@@ -8,15 +8,13 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <a routerLink="add" data-bs-toggle="modal" class="btn btn-sm btn-success mb-2">Create Branch</a> 
+                    <a routerLink="add" data-bs-toggle="modal" class="btn btn-sm btn-success mb-2">Create Branch</a>
                 </div>
-                <!-- Button to trigger modal -->
                 <div class="col-auto">
                     <button type="button" class="btn btn-info mb-2" (click)="openBranchDetailsModal()">
                         Get Branch Details
                     </button>
                 </div>
-                <!-- Column for the button on the right -->
                 <div class="col-auto">
                     <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#assignUserModal">
                         Assign User to Branch
@@ -24,6 +22,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Table with Branches -->
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -47,7 +47,6 @@
                             <span *ngIf="branch.branchStatus !== 'deactivated'">Deactivate</span>
                             <span *ngIf="branch.branchStatus === 'deactivated'">Reactivate</span>
                         </button>
-                        <!-- Show Delete button only when branchStatus is 'deactivated' -->
                         <button *ngIf="branch.branchStatus === 'deactivated'" (click)="deleteBranch(branch.id)" 
                                 class="btn btn-sm btn-danger btn-delete-branch" 
                                 [disabled]="branch.isDeleting">
@@ -56,7 +55,7 @@
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="!branches">
+                <tr *ngIf="loadingBranches">
                     <td colspan="4" class="text-center">
                         <span class="spinner-border spinner-border-lg align-center"></span>
                     </td>
@@ -73,6 +72,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div *ngIf="errorMessage" class="alert alert-danger">
+                            {{ errorMessage }}
+                        </div>
+                                <!-- Display Success Message -->
+                        <div *ngIf="successMessage" class="alert alert-success">
+                            {{ successMessage }}
+                        </div>
+
                         <form (ngSubmit)="assignUserToBranch()" #assignForm="ngForm">
                             <div class="mb-3">
                                 <label for="branchSelect" class="form-label">Select Branch</label>
@@ -86,7 +93,7 @@
                                     <option *ngFor="let account of accounts" [value]="account.id">{{ account.firstName }}</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid">Assign</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid || submitting">Assign</button>
                         </form>
                     </div>
                 </div>
@@ -94,49 +101,45 @@
         </div>
 
         <!-- Modal for Branch Details -->
-        <div class="modal fade" id="branchDetailsModal" tabindex="-1" aria-labelledby="branchDetailsModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="branchDetailsModalLabel">Branch Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       <!-- Modal for Branch Details -->
+<div class="modal fade" id="branchDetailsModal" tabindex="-1" aria-labelledby="branchDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="branchDetailsModalLabel">Branch Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetBranchDetails()"></button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="getBranchDetails()" #branchDetailsForm="ngForm">
+                    <div class="mb-3">
+                        <label for="branchSelect" class="form-label">Select Branch</label>
+                        <select [(ngModel)]="selectedBranchId" name="branchSelect" class="form-select" required>
+                            <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+                        </select>
                     </div>
-                    <div class="modal-body">
-                        <form (ngSubmit)="getBranchDetails()" #branchDetailsForm="ngForm">
-                            <!-- Select branch dropdown inside the modal -->
-                            <div class="mb-3">
-                                <label for="branchSelect" class="form-label">Select Branch</label>
-                                <select [(ngModel)]="selectedBranchId" name="branchSelect" class="form-select" required>
-                                    <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
-                                </select>
-                            </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="!selectedBranchId">Get Details</button>
+                </form>
 
-                            <!-- Button to fetch and display branch details -->
-                            <button type="submit" class="btn btn-primary" [disabled]="!selectedBranchId">Get Details</button>
-                        </form>
+                <div *ngIf="errorMessage" class="alert alert-danger mt-4">
+                    <strong>Error:</strong> {{ errorMessage }}
+                </div>
 
-                        <!-- Error Message -->
-                        <div *ngIf="errorMessage" class="alert alert-danger mt-4">
-                            <strong>Error:</strong> {{ errorMessage }}
-                        </div>
+                <div *ngIf="branchDetails && !errorMessage" class="mt-4">
+                    <h4>Branch Information</h4>
+                    <p><strong>Name:</strong> {{ branchDetails.name }}</p>
+                    <p><strong>Location:</strong> {{ branchDetails.location }}</p>
+                    <p><strong>Status:</strong> {{ branchDetails.branchStatus }}</p>
 
-                        <!-- Display Branch Details -->
-                        <div *ngIf="branchDetails && !errorMessage" class="mt-4">
-                            <h4>Branch Information</h4>
-                            <p><strong>Name:</strong> {{ branchDetails.name }}</p>
-                            <p><strong>Location:</strong> {{ branchDetails.location }}</p>
-                            <p><strong>Status:</strong> {{ branchDetails.branchStatus }}</p>
-
-                            <h5>Assigned Staff</h5>
-                            <ul>
-                                <li *ngFor="let user of branchDetails?.Accounts">
-                                    {{ user.firstName }} {{ user.lastName }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h5>Assigned Staff</h5>
+                    <ul>
+                        <li *ngFor="let user of branchDetails?.Accounts">
+                            {{ user.firstName }} {{ user.lastName }}
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
+ </div>
 </div>

@@ -12,7 +12,11 @@ export class BranchListComponent implements OnInit {
     selectedBranchId: string = '';
     selectedAccountId: string = '';
     branchDetails?: Branch; // Variable to hold branch details
-    errorMessage: string = '';  // Property for error message
+    errorMessage: string = '';
+    successMessage: string  = '';   // Property for error message
+    submitting = false;
+    loadingBranches = true;
+    loadingBranchDetails = false;
 
     constructor(
         private branchService: BranchService,
@@ -22,10 +26,17 @@ export class BranchListComponent implements OnInit {
     
 
     ngOnInit() {
-        this.branchService.getAllBranches().pipe(first()).subscribe(branches => (this.branches = branches));
+        this.branchService.getAllBranches().pipe(first()).subscribe(branches => {
+            this.branches = branches;
+            this.loadingBranches = false;
+        });
         this.accountService.getAll().pipe(first()).subscribe(accounts => (this.accounts = accounts));
+        
     }
-
+    resetSelection() {
+        this.selectedBranchId = '';
+        this.selectedAccountId = '';
+    }
     toggleDeactivateReactivateBranch(id: string) {
         const branch = this.branches!.find(x => x.id === id);
         
@@ -73,41 +84,66 @@ export class BranchListComponent implements OnInit {
         }
     }
     assignUserToBranch() {
+        this.errorMessage = '';  // Reset error message before making API call
+        this.successMessage = '';  // Reset success message before making API call
         if (this.selectedBranchId && this.selectedAccountId) {
             this.branchService
                 .assignUserToBranch(this.selectedBranchId, this.selectedAccountId)
                 .pipe(first())
                 .subscribe({
                     next: () => {
-                        this.alertService.success('User assigned to branch successfully');
+                        this.successMessage = 'User assigned to branch successfully';  // Set success message
+                        this.errorMessage = '';  // Clear any existing error message
+                        setTimeout(() => this.successMessage = '', 3000); // Clear success message after 3 seconds
                     },
-                    error: () => {
-                        this.alertService.error('only manager can be assign to branch');
+                    error: (error) => {
+                        if (error.status === 400) {
+                            this.errorMessage = 'Only a manager can be assigned to a branch';  // Set specific error message
+                        } else {
+                            this.errorMessage = 'user is already assigned or user is not a Manager';
+                        }
+                        setTimeout(() => {
+                            this.errorMessage = ''; // Clear error message after 3 seconds
+                        }, 3000); // Clear error message after 3 seconds
                     }
                 });
+        } else {
+            this.errorMessage = 'Please select both a branch and a user.';  // Error for missing selection
+            setTimeout(() => {
+                this.errorMessage = ''; // Clear error message after 3 seconds
+            }, 3000); // Clear error message after 3 seconds
         }
     }
-    openBranchDetailsModal() {
-        const modalElement = document.getElementById('branchDetailsModal');
-        if (modalElement) {
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        }
+   openBranchDetailsModal() {
+    const modalElement = document.getElementById('branchDetailsModal');
+    if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            this.resetSelection(); // Reset selections when modal is closed
+        });
     }
+}
     getBranchDetails() {
         this.errorMessage = '';  // Reset error message before API call
         if (this.selectedBranchId) {
+            this.loadingBranchDetails = true;
             this.branchService.getBranchById(this.selectedBranchId).pipe(first()).subscribe({
                 next: (branch) => {
                     this.branchDetails = branch;
+                    this.loadingBranchDetails = false;  // Stop loading once data is fetched
                     this.errorMessage = '';  // Clear any previous error
                 },
                 error: () => {
+                    this.loadingBranchDetails = false;
                     this.alertService.error('Error fetching branch details');
                 }
             });
         } else {
             this.alertService.error('Please select a branch');
         }
+    }
+    resetBranchDetails() {
+        this.branchDetails = undefined;  // Clear branch details when modal is closed
     }
 }
