@@ -72,19 +72,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Display Error Message -->
                         <div *ngIf="errorMessage" class="alert alert-danger">
                             {{ errorMessage }}
                         </div>
-                                <!-- Display Success Message -->
+                        <!-- Display Success Message -->
                         <div *ngIf="successMessage" class="alert alert-success">
                             {{ successMessage }}
                         </div>
-
+        
                         <form (ngSubmit)="assignUserToBranch()" #assignForm="ngForm">
                             <div class="mb-3">
                                 <label for="branchSelect" class="form-label">Select Branch</label>
                                 <select [(ngModel)]="selectedBranchId" name="branchSelect" class="form-select" required>
-                                    <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+                                    <option *ngFor="let branch of branches" [value]="branch.id" [disabled]="branch.branchStatus === 'deactivated'">
+                                        {{ branch.name }} <span *ngIf="branch.branchStatus === 'deactivated'">(Deactivated)</span>
+                                    </option>
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -99,6 +102,7 @@
                 </div>
             </div>
         </div>
+        
 
         <!-- Modal for Branch Details -->
        <!-- Modal for Branch Details -->

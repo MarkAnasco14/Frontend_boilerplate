@@ -86,7 +86,19 @@ export class BranchListComponent implements OnInit {
     assignUserToBranch() {
         this.errorMessage = '';  // Reset error message before making API call
         this.successMessage = '';  // Reset success message before making API call
+        
         if (this.selectedBranchId && this.selectedAccountId) {
+            // Find the selected branch and check its status
+            const selectedBranch = this.branches!.find(branch => branch.id === this.selectedBranchId);
+            
+            if (selectedBranch && selectedBranch.branchStatus === 'deactivated') {
+                this.errorMessage = 'Cannot assign user to a deactivated branch.';  // Set error for deactivated branch
+                setTimeout(() => {
+                    this.errorMessage = ''; // Clear error message after 3 seconds
+                }, 3000);
+                return;  // Exit function if branch is deactivated
+            }
+            
             this.branchService
                 .assignUserToBranch(this.selectedBranchId, this.selectedAccountId)
                 .pipe(first())
@@ -100,7 +112,7 @@ export class BranchListComponent implements OnInit {
                         if (error.status === 400) {
                             this.errorMessage = 'Only a manager can be assigned to a branch';  // Set specific error message
                         } else {
-                            this.errorMessage = 'user is already assigned or user is not a Manager';
+                            this.errorMessage = 'User is already assigned or user is not a Manager';
                         }
                         setTimeout(() => {
                             this.errorMessage = ''; // Clear error message after 3 seconds
