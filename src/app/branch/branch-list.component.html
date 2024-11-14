@@ -93,7 +93,7 @@
                             <div class="mb-3">
                                 <label for="accountSelect" class="form-label">Select User</label>
                                 <select [(ngModel)]="selectedAccountId" name="accountSelect" class="form-select" required>
-                                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.firstName }}</option>
+                                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.firstName }} {{ account.role }}</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid || submitting">Assign</button>
@@ -137,7 +137,7 @@
                     <h5>Assigned Staff</h5>
                     <ul>
                         <li *ngFor="let user of branchDetails?.Accounts">
-                            {{ user.firstName }} {{ user.lastName }}
+                            {{ user.firstName }} {{ user.lastName }} {{ user.role }}
                         </li>
                     </ul>
                 </div>
