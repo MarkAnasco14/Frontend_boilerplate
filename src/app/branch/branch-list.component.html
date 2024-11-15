@@ -93,7 +93,9 @@
                             <div class="mb-3">
                                 <label for="accountSelect" class="form-label">Select User</label>
                                 <select [(ngModel)]="selectedAccountId" name="accountSelect" class="form-select" required>
-                                    <option *ngFor="let account of accounts" [value]="account.id">{{ account.firstName }} {{ account.role }}</option>
+                                    <option *ngFor="let account of accounts" [value]="account.id">
+                                        {{ account.firstName }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ account.role }}
+                                    </option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary" [disabled]="assignForm.invalid || submitting">Assign</button>

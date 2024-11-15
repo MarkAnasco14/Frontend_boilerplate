@@ -1,35 +1,68 @@
-﻿import { Component } from '@angular/core';
-
-import { AccountService } from '@app/_services';
+﻿import { Component, OnInit } from '@angular/core';
+import { AccountService, BranchService } from '@app/_services';
 import { ActivityLog } from '@app/_models/activity-log.model';
+import { Branch, Account } from '@app/_models'; // Import Branch and Account models
 
 @Component({ templateUrl: 'details.component.html' })
-export class DetailsComponent {
+export class DetailsComponent implements OnInit {
     account = this.accountService.accountValue;
     activityLogs: ActivityLog[] = [];
-    showActivityLogs = false; // Initialize it
+    branch: Branch | null = null; // Declare branch as null initially
+    showActivityLogs = false;
+    showBranchInfo: boolean = false;  // Controls visibility of branch info
 
+    constructor(
+        private accountService: AccountService,
+        private branchService: BranchService // Use BranchService here
+    ) { }
+    
     ngOnInit(): void {
         // Call getActivityLogs when component initializes
         if (this.account && this.account.id) {
-            this.getActivityLogs(this.account.id); // Pass the account ID to get the logs
-        }
-    }
-    getActivityLogs(AccountId: string) {
+            this.getActivityLogs(this.account.id);
+
+              // Ensure the account has a branch and use the branch id to fetch the branch
+              if (this.account.BranchId) {  // Updated to match the correct property name
+                this.getBranchById(this.account.BranchId); // Use branchId from account
+            } else {
+                console.warn('No branchId assigned to account:', this.account.id);
+            }
+          }
+      }
+
+    getActivityLogs(AccountId: string): void {
         this.accountService.getActivityLogs(AccountId)
             .subscribe(
                 (logs) => {
-                    console.log('Fetched logs:', logs); // Log entire logs response
                     this.activityLogs = logs;
                 },
-                (error) => {
+                (error: any) => { // Explicitly type error as 'any'
                     console.error('Error fetching activity logs:', error);
                 }
-            ); 
-    }
-    toggleActivityLogs() {
-        this.showActivityLogs = !this.showActivityLogs; // Toggle visibility
+            );
     }
 
-    constructor(private accountService: AccountService) { }
+    getBranchById(BranchId: string): void {
+        this.branchService.getBranchById(BranchId)
+          .subscribe(
+            (branch: Branch) => {
+              
+              this.branch = branch;
+            },
+            (error: any) => {
+              console.error('Error fetching branch:', error);
+            }
+          );
+    }
+
+    toggleActivityLogs(): void {
+        this.showActivityLogs = !this.showActivityLogs;
+    }
+
+    toggleBranchInfo() {
+        this.showBranchInfo = !this.showBranchInfo;
+      }
+      isManager(): boolean {
+        return this.account?.role === 'Manager'; // Check account role instead of branch
+    }
 }
