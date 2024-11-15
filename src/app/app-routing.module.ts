@@ -15,7 +15,7 @@ const routes: Routes = [
     { path: 'account', loadChildren: accountModule },
     { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
     { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
-    { path: 'branch', loadChildren: branchModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Manager] } }, // Branch route accessible by both Admin and User
+    { path: 'branch', loadChildren: branchModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] } }, // Branch route accessible by both Admin and User
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

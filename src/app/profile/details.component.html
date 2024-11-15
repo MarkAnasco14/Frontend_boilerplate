@@ -1,32 +1,66 @@
-﻿<h1>My Profile</h1>
-<h2>Accounts</h2>
-<div class="d-flex justify-content-between align-items-center mb-2">
-    <h2 class="text-center flex-grow-1" *ngIf="showActivityLogs">Activity Logs</h2>
-    <button (click)="toggleActivityLogs()" class="btn btn-primary">
-        {{ showActivityLogs ? 'Hide Activity Logs' : 'Show Activity Logs' }}
-    </button>
+﻿<h1 class="text-center mb-4">My Profile</h1>
+
+<!-- Account Details Section -->
+<h2>Account Details</h2>
+<div *ngIf="account" class="card p-3 mb-4">
+    <div class="mb-3">
+        <strong>Name: </strong> {{ account.firstName }} {{ account.lastName }}<br />
+        <strong>Email: </strong> {{ account.email }}<br />
+        <strong>Role: </strong> {{ account.role }}<br />
+    </div>
+    <!-- Update Profile Button -->
+    <div class="text-left">
+        <p>
+            <a routerLink="update" class="btn btn-success">Update Profile</a>
+        </p>
+    </div>
 </div>
 
-<div *ngIf="showActivityLogs">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Action Type</th>
-                <th>Details</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let log of activityLogs">
-                <td>{{ log.actionType }}</td>
-                <td>{{ log.actionDetails }}</td>
-                <td>{{ log.timestamp | date:'short' }}</td>
-            </tr>
-        </tbody>
-    </table>
+<!-- Branch Information Card -->
+<div *ngIf="isManager()" class="card p-3 mb-4 position-relative">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Branch Information</h3>
+        <button (click)="toggleBranchInfo()" class="btn btn-primary">
+            {{ showBranchInfo ? 'Hide Branch Information' : 'Show Branch Information' }}
+        </button>
+    </div>
+    <!-- Branch Info Display -->
+    <div *ngIf="showBranchInfo" class="mt-3">
+        <div class="card p-3 bg-light">
+            <strong>Branch: </strong> {{ branch?.name || 'No Branch Assigned' }}<br />
+            <strong>Location: </strong> {{ branch?.location || 'N/A' }}<br />
+            <strong>Status: </strong> {{ branch?.branchStatus || 'N/A' }}
+        </div>
+    </div>
 </div>
-<p *ngIf="account">
-    <strong>Name: </strong> {{account.title}} {{account.firstName}} {{account.lastName}}<br />
-    <strong>Email: </strong> {{account.email}}
-</p>
-<p><a routerLink="update" class="btn btn-sm btn-success mb-2">Update Profile</a></p>
+
+<!-- Activity Logs Card -->
+<div class="card p-3 mb-4 position-relative">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Activity Logs</h3>
+        <button (click)="toggleActivityLogs()" class="btn btn-primary">
+            {{ showActivityLogs ? 'Hide Activity Logs' : 'Show Activity Logs' }}
+        </button>
+    </div>
+    <!-- Activity Logs Table -->
+    <div *ngIf="showActivityLogs" class="mt-3">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Action Type</th>
+                        <th>Details</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let log of activityLogs">
+                        <td>{{ log.actionType }}</td>
+                        <td>{{ log.actionDetails }}</td>
+                        <td>{{ log.timestamp | date:'short' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

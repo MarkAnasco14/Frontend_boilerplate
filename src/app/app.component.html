@@ -2,12 +2,12 @@
 <nav *ngIf="account?.role === Role.Manager" class="navbar navbar-expand navbar-dark bg-dark px-3 fixed-top">
     <div class="navbar-nav w-100">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Home</a>
-        <a *ngIf="account?.role === 'Manager'" routerLink="/branch" routerLinkActive="active" class="nav-item nav-link">Branch</a>
         <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
-
+        
         <!-- Display Branch Information if available -->
-
-        <button (click)="logout()" class="btn btn-link nav-item nav-link ms-3">Logout</button>
+        <div class="navbar-nav ms-auto">
+            <button (click)="logout()" class="btn btn-link nav-item nav-link">Logout</button>
+        </div>
     </div>
 </nav>
 

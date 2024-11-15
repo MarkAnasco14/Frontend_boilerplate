@@ -10,5 +10,6 @@ export class Account {
     role?: Role;
     jwtToken?: string;
     manager?: Account; // Optional, if the user has a manager
-    branch?: Branch;  // Add branch here if the account has a branch assigned
+    BranchId?: string;  // Ensure this is set correctly when the account is fetched
+    branch?: Branch;  // If the branch data itself is included in the account
 }
