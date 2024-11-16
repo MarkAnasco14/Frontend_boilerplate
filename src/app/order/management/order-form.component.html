@@ -1,0 +1,46 @@
+<h1>{{title}}</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="row mb-3">
+    <div class="col">
+      <label for="orderProduct">Product</label>
+      <input type="text" formControlName="orderProduct" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.orderProduct.errors }">
+      <div *ngIf="submitted && f.orderProduct.errors" class="invalid-feedback">
+        <div *ngIf="f.orderProduct.errors.required">Product is required</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="totalAmount">Total</label>
+      <input type="number" formControlName="totalAmount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.totalAmount.errors }">
+      <div *ngIf="submitted && f.totalAmount.errors" class="invalid-feedback">
+        <div *ngIf="f.totalAmount.errors.required">Total is required</div>
+        <div *ngIf="f.totalAmount.errors.min">Total must be a positive value</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <label for="shippingAddress">Shipping Address</label>
+      <textarea formControlName="shippingAddress" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.shippingAddress.errors }"></textarea>
+      <div *ngIf="submitted && f.shippingAddress.errors" class="invalid-feedback">
+        <div *ngIf="f.shippingAddress.errors.required">Shipping Address is required</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <button [disabled]="submitting" class="btn btn-primary">
+      <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+      Save
+    </button>
+    <a routerLink="/order" class="btn btn-link">Cancel</a>
+  </div>
+
+  <div *ngIf="loading" class="text-center m-5">
+    <div class="spinner-border spinner-border-lg align-center"></div>
+  </div>
+</form>

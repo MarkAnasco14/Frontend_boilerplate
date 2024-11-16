@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { AccountService } from './_services';
-import { BranchService } from './_services/branch.service';  // Import the BranchService
+import { AccountService , OrderService ,BranchService } from './_services';
 import { Account, Role } from './_models';
 
 @Component({
