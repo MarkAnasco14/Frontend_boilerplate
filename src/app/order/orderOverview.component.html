@@ -1,0 +1,11 @@
+<div class="p-4">
+    <div class="container">
+        <h1>Orders</h1>
+        <p>This section can only be accessed by users.</p>
+        
+        <!-- Create Order Button -->
+        <div class="mb-3" *ngIf="isUser">
+            <a routerLink="/order/management/add" class="btn btn-success btn-sm">Create Order</a>
+        </div>
+    </div>
+</div>

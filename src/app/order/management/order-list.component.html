@@ -1,0 +1,24 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Product</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{order.id}}</td>
+        <td>{{order.orderProduct}}</td>
+        <td>${{order.totalAmount}}</td>
+        <td>{{order.orderStatus}}</td>
+        <td>
+          <a routerLink="edit/{{ order.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
+          <button class="btn btn-danger btn-sm" *ngIf="!order.isCancelling" (click)="cancelOrder(order.id)">Cancel</button>
+          <div class="spinner-border spinner-border-sm" *ngIf="order.isCancelling"></div>
+        </td>
+      </tr>
+    </tbody>
+   </table>
