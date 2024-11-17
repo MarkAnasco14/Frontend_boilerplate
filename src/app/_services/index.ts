@@ -2,3 +2,4 @@
 export * from './alert.service';
 export * from './branch.service';
 export * from './order.service';
+export * from './product.service';
