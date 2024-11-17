@@ -7,8 +7,21 @@
       <div class="mb-3" *ngIf="isUser">
         <a routerLink="/order/management/add" class="btn btn-success btn-sm">Create Order</a>
       </div>
+       <!-- Select Order to Track -->
+       <div class="mb-3" *ngIf="isUser">
+        <label for="orderSelect"><h5>Track order Status:</h5></label>
+        <select id="orderSelect" class="form-control" (change)="onOrderSelect($event)">
+          <option value="">--Select an Order--</option>
+          <option *ngFor="let order of orders" [value]="order.id">{{ order.orderProduct }}</option>
+        </select>
+      </div>
+
+      <!-- Display Order Status -->
+      <div *ngIf="selectedOrderStatus" class="alert alert-info">
+        <strong>Order Status:</strong> {{ selectedOrderStatus }}
+      </div>
       <!-- Orders in cards -->
-      <div class="scroll-container" style="max-height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" >
+      <div *ngIf="isUser" class="scroll-container" style="max-height: 500px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" >
       <div class="row">
         <div *ngFor="let order of orders" class="col-md-4">
           <div class="card mb-3">
