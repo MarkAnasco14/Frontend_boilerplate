@@ -4,10 +4,9 @@ import { OrderService, AccountService , AlertService } from '@app/_services'; //
 
 @Component({ templateUrl: 'orderOverview.component.html' })
 export class OrderOverviewComponent implements OnInit {
-    orders: any[] = []; // Initialize as an empty array
+    orders?: any[];
+    selectedOrderStatus?: string; // To store the selected order status
     isUser: boolean = false; // Flag to check if the user is a regular user
-    filteredOrders: any[] = [];
-    selectedStatus: string = '';
 
     constructor(
         private orderService: OrderService,
@@ -35,18 +34,28 @@ export class OrderOverviewComponent implements OnInit {
             },
           });
       }
-
-      filterOrders() {
-        if (!this.selectedStatus) {
-          // Show all orders if no status is selected
-          this.filteredOrders = [...this.orders];
+      onOrderSelect(event: any) {
+        const orderId = event.target.value;
+        if (orderId) {
+            this.trackOrderStatus(orderId);
         } else {
-          // Filter by selected status
-          this.filteredOrders = this.orders.filter(
-            (order) => order.orderStatus === this.selectedStatus
-          );
+            this.selectedOrderStatus = undefined; // Reset status if no order is selected
         }
-      }
+    }
+
+    trackOrderStatus(id: string) {
+        this.orderService.trackOrderStatus(id)
+            .pipe(first())
+            .subscribe({
+                next: (status) => {
+                    this.selectedOrderStatus = status;
+                },
+                error: () => {
+                    this.alertService.error('Failed to track order status.');
+                }
+            });
+    }
+      
       cancelOrder(id: string) {
         const order = this.orders!.find(x => x.id === id);
         order.isCancelling = true;
