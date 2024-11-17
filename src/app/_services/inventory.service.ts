@@ -12,7 +12,7 @@ const baseUrl = `${environment.apiUrl}/inventory`;
 export class InventoryService {
     constructor(private http: HttpClient) { }
 
-    // Get all inventory items with their associated products
+    // Get all inventory items with their associated product
     getInventory(): Observable<Inventory[]> {
         return this.http.get<Inventory[]>(baseUrl);
     }
