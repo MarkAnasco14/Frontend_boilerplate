@@ -6,5 +6,5 @@ export interface Order {
     totalAmount: string;
     shippingAddress: string;
     orderStatus: string;
-    AcountId: string;  // Ensure this is set correctly when the account is fetched
+    AcountId: string;
 }
