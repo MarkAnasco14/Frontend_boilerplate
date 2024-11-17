@@ -13,17 +13,18 @@ export class ProductListComponent implements OnInit {
     deletingProductId: string | null = null;
     selectedProductId: string = '';
     productDetails?: Product; // Variable to hold product details
+    availabilityInfo?: { product: string, available: boolean, quantity: number }; // Add this property
     errorMessage: string = ''; // Property for error message
     isDeactivating?: boolean;
     isReactivating?: boolean;
-    isDeleting?: boolean; 
+    isDeleting?: boolean;
     isAdminManager: boolean = false; // Flag to check if the user is a regular user
+    isUser: boolean = false; // Flag to check if the user is a regular user
 
     constructor(
         private productService: ProductService,
         private accountService: AccountService,
         private alertService: AlertService
-        
     ) { }
 
     ngOnInit() {
@@ -33,11 +34,11 @@ export class ProductListComponent implements OnInit {
         const Manager = 'Manager';
 
         this.isAdminManager = account?.role === Admin || account?.role === Manager;
-        
+        this.isUser = account?.role === 'User';
+
         this.productService.getProduct()
             .pipe(first())
             .subscribe(products => this.products = products);
-        
     }
 
     // Toggle activation/deactivation of a product
@@ -73,7 +74,6 @@ export class ProductListComponent implements OnInit {
                 }
             });
     }
-    
 
     // Reactivate a product
     reactivateProduct(id: string, product: Product) {
@@ -92,7 +92,6 @@ export class ProductListComponent implements OnInit {
                 }
             });
     }
-        
 
     // Open the modal to view product details
     openProductDetailsModal() {
@@ -107,12 +106,14 @@ export class ProductListComponent implements OnInit {
     getProductDetails() {
         this.errorMessage = ''; // Reset error message before API call
         if (this.selectedProductId) {
+            // Fetch product details
             this.productService.getProductById(this.selectedProductId)
                 .pipe(first())
                 .subscribe({
                     next: (product) => {
                         this.productDetails = product;
                         this.errorMessage = ''; // Clear any previous error
+
                     },
                     error: () => {
                         this.alertService.error('Error fetching product details');
@@ -121,5 +122,21 @@ export class ProductListComponent implements OnInit {
         } else {
             this.alertService.error('Please select a product');
         }
+    }
+    getAvailabilityInfo(productId: string) {
+        this.productService.checkAvailability(productId)
+            .pipe(first())
+            .subscribe({
+                next: (availability) => {
+                    this.availabilityInfo = { 
+                        product: productId, 
+                        available: availability.available, 
+                        quantity: availability.quantity 
+                    };
+                },
+                error: () => {
+                    this.alertService.error('Error fetching availability information');
+                }
+            });
     }
 }
