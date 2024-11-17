@@ -19,6 +19,9 @@ export class OrderService {
     getOrderById(id: string): Observable<Order> {
         return this.http.get<Order>(`${baseUrl}/${id}`);
     }
+    getOrderViewById(id: string): Observable<Order> {
+        return this.http.get<Order>(`${baseUrl}/orderView/${id}`);
+    }
 
     createOrder(order: Order): Observable<Order> {
         return this.http.post<Order>(baseUrl, order);

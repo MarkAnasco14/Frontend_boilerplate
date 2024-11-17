@@ -16,6 +16,9 @@
         <td>{{order.orderStatus}}</td>
         <td>
           <a routerLink="edit/{{ order.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
+          <button class="btn btn-success me-1 btn-sm" *ngIf="!order.isProcess" (click)="processOrder(order.id)">Process</button>
+          <button class="btn btn-success me-1 btn-sm" *ngIf="!order.isShip" (click)="shipOrder(order.id)">Ship</button>
+          <button class="btn btn-success me-1 btn-sm" *ngIf="!order.isDeliver" (click)="deliverOrder(order.id)">Deliver</button>
           <button class="btn btn-danger btn-sm" *ngIf="!order.isCancelling" (click)="cancelOrder(order.id)">Cancel</button>
           <div class="spinner-border spinner-border-sm" *ngIf="order.isCancelling"></div>
         </td>
