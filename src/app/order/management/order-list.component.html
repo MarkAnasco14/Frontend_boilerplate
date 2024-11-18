@@ -1,27 +1,60 @@
-<table class="table">
+
+<!-- order-list.component.html -->
+<h1>Orders</h1>
+<table class="table table-striped">
     <thead>
-      <tr>
-        <th>Order #</th>
-        <th>Product</th>
-        <th>Total</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
+        <tr>
+            <th>Order #</th>
+            <th>Product</th>
+            <th>price</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let order of orders">
-        <td>{{order.id}}</td>
-        <td>{{order.orderProduct}}</td>
-        <td>${{order.totalAmount}}</td>
-        <td>{{order.orderStatus}}</td>
-        <td>
-          <a routerLink="edit/{{ order.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
-          <button class="btn btn-success me-1 btn-sm" *ngIf="!order.isProcess" (click)="processOrder(order.id)">Process</button>
-          <button class="btn btn-success me-1 btn-sm" *ngIf="!order.isShip" (click)="shipOrder(order.id)">Ship</button>
-          <button class="btn btn-success me-1 btn-sm" *ngIf="!order.isDeliver" (click)="deliverOrder(order.id)">Deliver</button>
-          <button class="btn btn-danger btn-sm" *ngIf="!order.isCancelling" (click)="cancelOrder(order.id)">Cancel</button>
-          <div class="spinner-border spinner-border-sm" *ngIf="order.isCancelling"></div>
-        </td>
-      </tr>
+        <tr *ngFor="let order of orders">
+            <td>{{order.id}}</td>
+            <td>{{order.Product?.name}}</td>
+            <td>${{order.Product?.price}}</td>
+            <td>{{order.totalAmount}}</td>
+            <td>{{order.orderStatus}}</td>
+            <td>
+                <button *ngIf="order.orderStatus === 'pending'"
+                    (click)="processOrder(order.id)" 
+                    class="btn btn-sm btn-primary me-1"
+                    [disabled]="order.isProcessing">
+                    <span *ngIf="order.isProcessing" class="spinner-border spinner-border-sm me-1"></span>
+                    Process
+                </button>
+                
+                <button *ngIf="order.orderStatus === 'processing'"
+                    (click)="shipOrder(order.id)" 
+                    class="btn btn-sm btn-info me-1"
+                    [disabled]="order.isShipping">
+                    <span *ngIf="order.isShipping" class="spinner-border spinner-border-sm me-1"></span>
+                    Ship
+                </button>
+                
+                <button *ngIf="order.orderStatus === 'shipped'"
+                    (click)="deliverOrder(order.id)" 
+                    class="btn btn-sm btn-success me-1"
+                    [disabled]="order.isDelivering">
+                    <span *ngIf="order.isDelivering" class="spinner-border spinner-border-sm me-1"></span>
+                    Deliver
+                </button>
+                
+                <button *ngIf="['pending', 'processing'].includes(order.orderStatus)"
+                    (click)="cancelOrder(order.id)" 
+                    class="btn btn-sm btn-danger"
+                    [disabled]="order.isCancelling">
+                    <span *ngIf="order.isCancelling" class="spinner-border spinner-border-sm me-1"></span>
+                    Cancel
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="!orders?.length">
+            <td colspan="5" class="text-center">No orders to display</td>
+        </tr>
     </tbody>
-   </table>
+</table>
