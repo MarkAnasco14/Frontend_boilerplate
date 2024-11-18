@@ -24,16 +24,10 @@ export class OrderOverviewComponent implements OnInit {
       }
       loadOrders() {
         this.orderService.getAllOrders()
-          .pipe(first())
-          .subscribe({
-            next: (orders) => {
-              this.orders = orders;
-            },
-            error: () => {
-              this.alertService.error('Failed to load orders.');
-            },
-          });
-      }
+            .pipe(first())
+            .subscribe(orders => this.orders = orders);
+    }
+
       onOrderSelect(event: any) {
         const orderId = event.target.value;
         if (orderId) {
