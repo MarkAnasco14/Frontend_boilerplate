@@ -22,7 +22,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Name: {{ product.name }}</h5>
-                        <p class="card-text">Price: {{ product.price | currency }}</p>
+                        <p class="card-text">Price: ₱{{ product.price }}</p>
                         <p class="card-text">Status: {{ product.productStatus }}</p>
                         <button class="btn btn-info" (click)="getAvailabilityInfo(product.id)">
                             Check Availability
@@ -50,7 +50,7 @@
             <tbody>
                 <tr *ngFor="let product of products">
                     <td class="align-middle">{{ product.name }}</td>
-                    <td class="align-middle">{{ product.price }}</td>
+                    <td class="align-middle">₱{{ product.price }}</td>
                     <td class="align-middle">{{ product.productStatus }}</td>
                     <td *ngIf="isUser">
                         <button class="btn btn-info me-2" (click)="getAvailabilityInfo(product.id)">
@@ -107,7 +107,7 @@
                 <div *ngIf="productDetails && !errorMessage" class="mt-4">
                     <h4>Product Information</h4>
                     <p><strong>Name:</strong> {{ productDetails.name }}</p>
-                    <p><strong>Price:</strong> {{ productDetails.price | currency }}</p>
+                    <p><strong>Price:</strong> ₱{{ productDetails.price}}</p>
                     <p><strong>Status:</strong> {{ productDetails.productStatus }}</p>
 
                     <h5>Description</h5>
