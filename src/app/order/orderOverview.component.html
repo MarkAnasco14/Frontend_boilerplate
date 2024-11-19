@@ -30,10 +30,11 @@
             </div>
             <div class="card-body">
               <p><strong>Product:</strong> {{order.Product?.name}}</p>
-              <p><strong>Price:</strong> ${{order.Product?.price}}</p>
+              <p><strong>Price:</strong> ₱{{order.Product?.price}}</p>
               <p><strong>Address:</strong> {{ order.shippingAddress }}</p>
-              <p><strong>Total amount:</strong> {{ order.totalAmount }}</p>
+              <p><strong>Quantity:</strong> {{ order.totalAmount }}</p>
               <p><strong>Status:</strong> {{ order.orderStatus }}</p>
+              <p><strong>Date:</strong> {{ order.createdAt | date:'short' }}</p>
               
             </div>
             <div class="card-footer text-end">

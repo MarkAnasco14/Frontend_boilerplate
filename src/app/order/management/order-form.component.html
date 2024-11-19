@@ -23,7 +23,7 @@
 
     <div class="row mb-3">
         <div class="col">
-            <label class="form-label">Total Amount</label>
+            <label class="form-label">Quantity</label>
             <input 
                 type="number" 
                 formControlName="totalAmount" 
@@ -31,8 +31,8 @@
                 [ngClass]="{ 'is-invalid': submitted && f.totalAmount.errors }"
             />
             <div *ngIf="submitted && f.totalAmount.errors" class="invalid-feedback">
-                <div *ngIf="f.totalAmount.errors.required">Total Amount is required</div>
-                <div *ngIf="f.totalAmount.errors.min">Total Amount must be a positive value</div>
+                <div *ngIf="f.totalAmount.errors.required">Total Quantity is required</div>
+                <div *ngIf="f.totalAmount.errors.min">Total Quantity must be a positive value</div>
             </div>
         </div>
     </div>

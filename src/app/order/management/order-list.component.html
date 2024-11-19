@@ -9,6 +9,7 @@
             <th>price</th>
             <th>Total</th>
             <th>Status</th>
+            <th>Date</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -16,9 +17,10 @@
         <tr *ngFor="let order of orders">
             <td>{{order.id}}</td>
             <td>{{order.Product?.name}}</td>
-            <td>${{order.Product?.price}}</td>
+            <td>₱{{order.Product?.price}}</td>
             <td>{{order.totalAmount}}</td>
             <td>{{order.orderStatus}}</td>
+            <td>{{order.createdAt | date:'short'}}</td>
             <td>
                 <button *ngIf="order.orderStatus === 'pending'"
                     (click)="processOrder(order.id)" 

@@ -35,7 +35,8 @@ export class OrderFormComponent implements OnInit {
         this.form = this.formBuilder.group({
             productId: ['', Validators.required],
             totalAmount: ['', [Validators.required, Validators.min(0)]],
-            shippingAddress: ['', Validators.required]
+            shippingAddress: ['', Validators.required],
+            createdAt: [Date(), Validators.required]
         });
 
         this.title = 'Create Order';

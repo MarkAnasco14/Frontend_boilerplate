@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { InventoryService, AlertService } from '@app/_services';
-import { Inventory } from '@app/_models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-@Component({templateUrl: './inventory-add-edit.component.html',
+import { InventoryService, AlertService, ProductService } from '@app/_services';
+import { Inventory } from '@app/_models';
+
+@Component({
+    templateUrl: './inventory-add-edit.component.html',
 })
 export class InventoryAddEditComponent implements OnInit {
     inventory: Inventory[] = [];
@@ -13,36 +15,30 @@ export class InventoryAddEditComponent implements OnInit {
     submitting = false;
     submitted = false;
     selectedInventory?: Inventory;
+    products: any[] = [];
 
     constructor(
         private inventoryService: InventoryService,
         private alertService: AlertService,
-        private formBuilder: FormBuilder
-    ) { }
+        private formBuilder: FormBuilder,
+        private productService: ProductService
+    ) {}
 
     ngOnInit() {
-        this.loadInventory();
+        this.loadProducts();
 
         // Initialize form for updating stock quantity
         this.form = this.formBuilder.group({
-            quantity: [0, [Validators.required, Validators.min(0)]]
+            productId: ['', Validators.required],
+            quantity: [0, [Validators.required, Validators.min(0)]],
         });
     }
 
-    // Load inventory list
-    private loadInventory() {
-        this.loading = true;
-        this.inventoryService.getInventory()
+    loadProducts() {
+        this.productService.getProduct()
             .pipe(first())
-            .subscribe({
-                next: (inventory) => {
-                    this.inventory = inventory;
-                    this.loading = false;
-                },
-                error: (error) => {
-                    this.alertService.error('Error loading inventory: ' + error);
-                    this.loading = false;
-                }
+            .subscribe(products => {
+                this.products = products.filter(p => p.productStatus === 'active');
             });
     }
 
@@ -66,21 +62,27 @@ export class InventoryAddEditComponent implements OnInit {
 
         this.submitting = true;
 
-        const { productId } = this.selectedInventory;
-        const { quantity } = this.form.value;
+        const productId = Number(this.selectedInventory.productId); // Convert to number
+        const quantity = Number(this.form.value.quantity); // Convert to number
+
+        if (isNaN(productId) || isNaN(quantity)) {
+            this.alertService.error('Invalid input: Ensure quantity and productId are numeric');
+            this.submitting = false;
+            return;
+        }
 
         this.inventoryService.updateStock(productId, quantity)
             .pipe(first())
             .subscribe({
                 next: () => {
                     this.alertService.success('Stock updated successfully');
-                    this.loadInventory(); // Reload inventory list
+                    this.loadProducts(); // Reload inventory list
                     this.submitting = false;
                 },
                 error: (error) => {
                     this.alertService.error('Error updating stock: ' + error);
                     this.submitting = false;
-                }
+                },
             });
     }
 
