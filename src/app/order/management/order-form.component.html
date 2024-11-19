@@ -23,16 +23,17 @@
 
     <div class="row mb-3">
         <div class="col">
-            <label class="form-label">Quantity</label>
+            <label for="quantity">Quantity</label>
             <input 
                 type="number" 
-                formControlName="totalAmount" 
+                formControlName="quantity" 
                 class="form-control" 
-                [ngClass]="{ 'is-invalid': submitted && f.totalAmount.errors }"
+                [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }"
+                min="1"
             />
-            <div *ngIf="submitted && f.totalAmount.errors" class="invalid-feedback">
-                <div *ngIf="f.totalAmount.errors.required">Total Quantity is required</div>
-                <div *ngIf="f.totalAmount.errors.min">Total Quantity must be a positive value</div>
+            <div *ngIf="submitted && f.quantity.errors" class="invalid-feedback">
+                <div *ngIf="f.quantity.errors.required">Quantity is required</div>
+                <div *ngIf="f.quantity.errors.min">Quantity must be at least 1</div>
             </div>
         </div>
     </div>

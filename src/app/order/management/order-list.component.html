@@ -6,8 +6,8 @@
         <tr>
             <th>Order #</th>
             <th>Product</th>
-            <th>price</th>
-            <th>Total</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
             <th>Status</th>
             <th>Date</th>
             <th>Actions</th>
@@ -17,8 +17,8 @@
         <tr *ngFor="let order of orders">
             <td>{{order.id}}</td>
             <td>{{order.Product?.name}}</td>
-            <td>₱{{order.Product?.price}}</td>
-            <td>{{order.totalAmount}}</td>
+            <td>{{order.quantity }}</td>
+            <td>${{order.totalAmount}}</td>
             <td>{{order.orderStatus}}</td>
             <td>{{order.createdAt | date:'short'}}</td>
             <td>

@@ -34,7 +34,7 @@ export class OrderFormComponent implements OnInit {
 
         this.form = this.formBuilder.group({
             productId: ['', Validators.required],
-            totalAmount: ['', [Validators.required, Validators.min(0)]],
+            quantity: [1, [Validators.required, Validators.min(1)]], // Add quantity field
             shippingAddress: ['', Validators.required],
             createdAt: [Date(), Validators.required]
         });
@@ -64,7 +64,10 @@ export class OrderFormComponent implements OnInit {
     onProductSelect(event: any) {
         const selectedProduct = this.products.find(p => p.id === +event.target.value);
         if (selectedProduct) {
+            // Calculate total amount based on selected product and default quantity
+            const quantity = this.form.get('quantity')?.value || 1;
             this.form.patchValue({
+                // totalAmount will be calculated on server-side
                 price: selectedProduct.price
             });
         }
@@ -82,7 +85,7 @@ export class OrderFormComponent implements OnInit {
 
         this.submitting = true;
 
-        let saveOrder: () => any;
+        let saveOrder;
         let message: string;
 
         if (this.id) {
@@ -100,9 +103,8 @@ export class OrderFormComponent implements OnInit {
                     this.alertService.success(message, { keepAfterRouteChange: true });
                     this.router.navigateByUrl('/order');
                 },
-                error: (error: any) => {
-                    const errorMessage = error.message || 'An error occurred';
-                    this.alertService.error(errorMessage);
+                error: error => {
+                    this.alertService.error(error);
                     this.submitting = false;
                 }
             });
