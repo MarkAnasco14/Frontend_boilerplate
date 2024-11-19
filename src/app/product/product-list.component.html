@@ -21,7 +21,7 @@
             <div class="col-md-4" *ngFor="let product of products">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Name: {{ product.name }}</h5>
+                        <h5 class="card-title">Product Name: {{ product.name }}</h5>
                         <p class="card-text">Price: ₱{{ product.price }}</p>
                         <p class="card-text">Status: {{ product.productStatus }}</p>
                         <button class="btn btn-info" (click)="getAvailabilityInfo(product.id)">
