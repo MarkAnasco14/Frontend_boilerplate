@@ -43,13 +43,13 @@ export class ProductListComponent implements OnInit {
 
     // Toggle activation/deactivation of a product
     toggleDeactivateReactivateProduct(id: string) {
-        const product = this.products.find(x => x.id === id);
-
+        const product = this.products.find(p => p.id === id);
+    
         if (!product) {
             this.alertService.error('Product not found');
             return;
         }
-
+    
         if (product.productStatus === 'deactivated') {
             this.reactivateProduct(id, product);
         } else {
@@ -64,13 +64,14 @@ export class ProductListComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    product.productStatus = 'deactivated'; // Update status
+                    product.productStatus = 'deactivated'; // Update UI
                     this.deactivatingProductId = null; // Reset after deactivation
                     this.alertService.success('Product deactivated successfully');
                 },
-                error: () => {
+                error: (error) => {
                     this.deactivatingProductId = null; // Reset on error
-                    this.alertService.error('Error deactivating product');
+                    console.error('Error deactivating product:', error);
+                    this.alertService.error(error);
                 }
             });
     }

@@ -63,6 +63,17 @@
                     </td>
                     <td style="white-space: nowrap" *ngIf="isAdminManager">
                         <a routerLink="edit/{{ product.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
+                        <button 
+                        class="btn btn-sm" 
+                        [ngClass]="{
+                            'btn-success': product.productStatus === 'deactivated',
+                            'btn-warning': product.productStatus !== 'deactivated'
+                        }" 
+                        [disabled]="deactivatingProductId === product.id || reactivatingProductId === product.id"
+                        (click)="toggleDeactivateReactivateProduct(product.id)">
+                        <span *ngIf="deactivatingProductId === product.id || reactivatingProductId === product.id" class="spinner-border spinner-border-sm"></span>
+                        {{ product.productStatus === 'deactivated' ? 'Reactivate' : 'Deactivate' }}
+                    </button>
                     </td>
                 </tr>
                 <tr *ngIf="!products || products.length === 0">
