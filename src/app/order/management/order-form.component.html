@@ -12,7 +12,7 @@
                 (change)="onProductSelect($event)">
                 <option value="">Select a product</option>
                 <option *ngFor="let product of products" [value]="product.id">
-                    {{product.name}} - ${{product.price}}
+                    {{product.name}} - ₱{{product.price}}
                 </option>
             </select>
             <div *ngIf="submitted && f.productId.errors" class="invalid-feedback">

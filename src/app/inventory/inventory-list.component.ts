@@ -12,6 +12,9 @@ export class InventoryListComponent implements OnInit {
     loading = false;
     selectedInventory?: Inventory;
     updatedQuantity = '';
+    updatedReorderPoint = '';
+    lowStockItems: Inventory[] = [];
+    showLowStockOnly = false;
 
     constructor(
         private inventoryService: InventoryService,
@@ -21,9 +24,9 @@ export class InventoryListComponent implements OnInit {
 
     ngOnInit() {
         this.loadInventory();
+        this.loadLowStockItems();
     }
 
-    // Load inventory and associate with products
     loadInventory() {
         this.loading = true;
         this.inventoryService.getInventory()
@@ -54,22 +57,48 @@ export class InventoryListComponent implements OnInit {
             });
     }
 
-    // Select an inventory item for update
-    selectInventory(item: Inventory) {
-        this.selectedInventory = item;
-        this.updatedQuantity = item.quantity; // Pre-fill with current quantity
-        this.showModal();
+    loadLowStockItems() {
+        this.inventoryService.getLowStock()
+            .pipe(first())
+            .subscribe({
+                next: (lowStockItems) => {
+                    this.productService.getProduct()
+                    .pipe(first())
+                    .subscribe({
+                        next: (products) => {
+                            this.products = products;
+                            this.lowStockItems = lowStockItems.map(items => ({
+                                ...items,
+                                product: products.find(product => product.id === items.productId),
+                            }));
+                            this.loading = false;
+                        },
+                        error: () => {
+                            this.alertService.error('Failed to load products');
+                            this.loading = false;
+                        },
+                    });
+            },
+                error: () => {
+                    this.alertService.error('Failed to load low stock items');
+                }
+            });
     }
 
-    // Update stock quantity
+    selectInventory(item: Inventory) {
+        this.selectedInventory = item;
+        this.updatedQuantity = item.quantity;
+        this.updatedReorderPoint = item.reorderPoint.toString();
+    }
+
     updateStock() {
         if (!this.selectedInventory) return;
 
-        const productId = Number(this.selectedInventory.productId); // Convert to number
-        const quantity = Number(this.updatedQuantity); // Convert to number
+        const productId = Number(this.selectedInventory.productId);
+        const quantity = Number(this.updatedQuantity);
 
         if (isNaN(productId) || isNaN(quantity)) {
-            this.alertService.error('Invalid input: Ensure quantity and productId are numeric');
+            this.alertService.error('Invalid input: Ensure quantity is numeric');
             return;
         }
 
@@ -78,8 +107,9 @@ export class InventoryListComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.alertService.success('Stock updated successfully');
-                    this.loadInventory(); // Reload inventory list
-                    this.closeModal();
+                    this.loadInventory();
+                    this.loadLowStockItems();
+                    this.closeModal('updateStockModal');
                 },
                 error: (error) => {
                     this.alertService.error('Error updating stock: ' + error);
@@ -87,20 +117,47 @@ export class InventoryListComponent implements OnInit {
             });
     }
 
-    // Show modal for updating stock
-    private showModal() {
-        const modal = new bootstrap.Modal(document.getElementById('updateStockModal'));
-        modal.show();
+    updateReorderPoint() {
+        if (!this.selectedInventory) return;
+
+        const productId = Number(this.selectedInventory.productId);
+        const reorderPoint = Number(this.updatedReorderPoint);
+
+        if (isNaN(productId) || isNaN(reorderPoint)) {
+            this.alertService.error('Invalid input: Ensure reorder point is numeric');
+            return;
+        }
+
+        this.inventoryService.setReorderPoint(productId, reorderPoint)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Reorder point updated successfully');
+                    this.loadInventory();
+                    this.closeModal('reorderPointModal');
+                },
+                error: (error) => {
+                    this.alertService.error('Error updating reorder point: ' + error);
+                },
+            });
     }
 
-    // Close modal after updating stock
-    private closeModal() {
-        const modalElement = document.getElementById('updateStockModal');
+    toggleLowStockFilter() {
+        this.showLowStockOnly = !this.showLowStockOnly;
+        if (this.showLowStockOnly) {
+            this.loadLowStockItems();
+        } else {
+            this.loadInventory();
+        }
+    }
+    private closeModal(modalId: string) {
+        const modalElement = document.getElementById(modalId);
         if (modalElement) {
             const modal = bootstrap.Modal.getInstance(modalElement);
             modal.hide();
         }
-        this.selectedInventory = undefined; // Clear selection
+        this.selectedInventory = undefined;
         this.updatedQuantity = '';
+        this.updatedReorderPoint = '';
     }
 }

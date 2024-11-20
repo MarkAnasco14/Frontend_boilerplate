@@ -1,8 +1,12 @@
 import { Product } from '@app/_models';
 
+// inventory.ts
 export interface Inventory {
     id?: string;
     productId: string;
     quantity: string;
-    product?: Product; // Make sure to include the product details here
+    reorderPoint: string;
+    reorderStatus: 'none' | 'pending' | 'alerted';
+    lastReorderAlert?: string;
+    product?: Product;
 }
