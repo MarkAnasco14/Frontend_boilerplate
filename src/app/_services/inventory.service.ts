@@ -26,4 +26,16 @@ export class InventoryService {
     checkAvailability(productId: number): Observable<{ name: string; quantity: number }> {
         return this.http.get<{ name: string; quantity: number }>(`${baseUrl}/availability/${productId}`);
     }
+    
+    setReorderPoint(productId: number, reorderPoint: number): Observable<Inventory> {
+        return this.http.post<Inventory>(`${baseUrl}/reorder-point`, { productId, reorderPoint });
+    }
+
+    getLowStock(): Observable<Inventory[]> {
+        return this.http.get<Inventory[]>(`${baseUrl}/low-stock`);
+    }
+
+    acknowledgeAlert(productId: number): Observable<Inventory> {
+        return this.http.post<Inventory>(`${baseUrl}/acknowledge-alert`, { productId });
+    }
 }
