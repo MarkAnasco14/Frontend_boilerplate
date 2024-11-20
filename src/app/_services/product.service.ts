@@ -43,11 +43,11 @@ export class ProductService {
     }
 
     deactivateProduct(id: string): Observable<any> {
-        return this.http.put(`${baseUrl}/${id}/deactivate`, {});
+        return this.http.put(`${baseUrl}/${id}/deactivateProduct`, {});
     }
 
     reactivateProduct(id: string): Observable<any> {
-        return this.http.put(`${baseUrl}/${id}/reactivate`, {});
+        return this.http.put(`${baseUrl}/${id}/reactivateProduct`, {});
     }
 
     checkAvailability(productId: string): Observable<{

@@ -42,17 +42,6 @@
                     </div>
 
                     <!-- Product Status -->
-                    <div class="mb-3 col-6">
-                        <label class="form-label">Product Status</label>
-                        <select formControlName="productStatus" class="form-select"
-                                [ngClass]="{ 'is-invalid': submitted && f.productStatus.errors }">
-                            <option value="active">Active</option>
-                            <option value="deactivated">Deactivated</option>
-                        </select>
-                        <div *ngIf="submitted && f.productStatus.errors" class="invalid-feedback">
-                            <div *ngIf="f.productStatus.errors.required">Product Status is required</div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Save and Cancel Buttons -->
