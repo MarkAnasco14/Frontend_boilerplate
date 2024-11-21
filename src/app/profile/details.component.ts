@@ -63,6 +63,6 @@ export class DetailsComponent implements OnInit {
         this.showBranchInfo = !this.showBranchInfo;
       }
       isManager(): boolean {
-        return this.account?.role === 'Manager'; // Check account role instead of branch
+        return this.account?.role === 'Staff'; // Check account role instead of branch
     }
 }

@@ -31,9 +31,9 @@ export class ProductListComponent implements OnInit {
         const account = this.accountService.accountValue;
 
         const Admin = 'Admin';
-        const Manager = 'Manager';
+        const Staff = 'Staff';
 
-        this.isAdminManager = account?.role === Admin || account?.role === Manager;
+        this.isAdminManager = account?.role === Admin || account?.role === Staff;
         this.isUser = account?.role === 'User';
 
         this.productService.getProduct()
