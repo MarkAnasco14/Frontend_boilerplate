@@ -40,10 +40,10 @@
         </div>
         <div class="mb-3">
             <label class="form-label">phoneNumber</label>
-            <input type="number" formControlName="phoneNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }" />
+            <input type="text" formControlName="phoneNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }" />
             <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
                 <div *ngIf="f.phoneNumber.errors.required">phoneNumber is required</div>
-                <div *ngIf="f.phoneNumber.errors.phoneNumber">phoneNumber must be a valid phoneNumber address</div>
+                <div *ngIf="f.phoneNumber.errors.pattern">Phone Number must be a valid Philippine mobile number (e.g., 09123456789)</div>
             </div>
         </div>
         <div class="mb-3 col-5">
