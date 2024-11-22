@@ -1,5 +1,5 @@
 ﻿<!-- Top Navbar for User -->
-<nav *ngIf="account?.role === Role.Manager" class="navbar navbar-expand navbar-dark bg-dark px-3 fixed-top">
+<nav *ngIf="account?.role === Role.Staff" class="navbar navbar-expand navbar-dark bg-dark px-3 fixed-top">
     <div class="navbar-nav w-100">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Home</a>
         <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
@@ -28,7 +28,7 @@
     </div>
 </nav>
 
-<div class="app-container d-flex" [ngClass]="{ 'bg-light': account }" [ngStyle]="{ 'padding-top': account?.role === Role.Manager || Role.User  ? '56px' : '0' }">
+<div class="app-container d-flex" [ngClass]="{ 'bg-light': account }" [ngStyle]="{ 'padding-top': account?.role === Role.User || account?.role === Role.Staff ? '56px' : '0' }">
     <!-- Sidebar for Admin -->
     <nav *ngIf="account?.role === Role.Admin" 
          class="navbar navbar-expand-lg navbar-dark bg-dark flex-column p-3"

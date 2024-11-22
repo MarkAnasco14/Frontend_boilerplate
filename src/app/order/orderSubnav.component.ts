@@ -13,6 +13,6 @@ export class OrderSubNavComponent implements OnInit {
 
   ngOnInit(): void {
     const account = this.accountService.accountValue;
-    this.isAdminOrManager = account?.role === 'Admin' || account?.role === 'Manager';
+    this.isAdminOrManager = account?.role === 'Admin' || account?.role === 'Staff';
   }
 }

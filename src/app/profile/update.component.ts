@@ -28,6 +28,10 @@ export class UpdateComponent implements OnInit {
             firstName: [this.account.firstName, Validators.required],
             lastName: [this.account.lastName, Validators.required],
             email: [this.account.email, [Validators.required, Validators.email]],
+            phoneNumber: [this.account.phoneNumber, [
+                Validators.required, 
+                Validators.pattern(/^(09|\+639)\d{9}$/)
+            ]],
             password: ['', [Validators.minLength(6)]],
             confirmPassword: ['']
         }, {

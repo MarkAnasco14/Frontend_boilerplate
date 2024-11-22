@@ -19,9 +19,9 @@ const routes: Routes = [
     { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
     { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
     { path: 'branch', loadChildren: branchModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] } }, // Branch route accessible by both Admin and User
-    { path: 'order', loadChildren: adminManagerModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Manager, Role.User] }},
-    { path: 'product', loadChildren: productsModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Manager, Role.User] }},
-    { path: 'inventory', loadChildren: inventoryModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Manager] }},
+    { path: 'order', loadChildren: adminManagerModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Staff, Role.User] }},
+    { path: 'product', loadChildren: productsModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Staff, Role.User] }},
+    { path: 'inventory', loadChildren: inventoryModule, canActivate: [AuthGuard], data: { roles: [Role.Admin, Role.Staff] }},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

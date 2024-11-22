@@ -7,6 +7,7 @@ export class Account {
     firstName?: string;
     lastName?: string;
     email?: string;
+    phoneNumber?: string;
     role?: Role;
     jwtToken?: string;
     manager?: Account; // Optional, if the user has a manager
