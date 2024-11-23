@@ -1,68 +1,82 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { AccountService, BranchService } from '@app/_services';
 import { ActivityLog } from '@app/_models/activity-log.model';
-import { Branch, Account } from '@app/_models'; // Import Branch and Account models
+import { Branch } from '@app/_models';
 
-@Component({ templateUrl: 'details.component.html' })
+@Component({
+    templateUrl: 'details.component.html'
+})
 export class DetailsComponent implements OnInit {
     account = this.accountService.accountValue;
     activityLogs: ActivityLog[] = [];
-    branch: Branch | null = null; // Declare branch as null initially
+    filteredLogs: ActivityLog[] = [];
+    branch: Branch | null = null;
     showActivityLogs = false;
-    showBranchInfo: boolean = false;  // Controls visibility of branch info
+    showBranchInfo: boolean = false;
+    searchTerm: string = '';
+    startDate: string = '';
+    endDate: string = '';
 
     constructor(
         private accountService: AccountService,
-        private branchService: BranchService // Use BranchService here
-    ) { }
-    
+        private branchService: BranchService
+    ) {}
+
     ngOnInit(): void {
-        // Call getActivityLogs when component initializes
-        if (this.account && this.account.id) {
+        if (this.account?.id) {
             this.getActivityLogs(this.account.id);
-
-              // Ensure the account has a branch and use the branch id to fetch the branch
-              if (this.account.BranchId) {  // Updated to match the correct property name
-                this.getBranchById(this.account.BranchId); // Use branchId from account
-            } else {
-                console.warn('No branchId assigned to account:', this.account.id);
+            if (this.account.BranchId) {
+                this.getBranchById(this.account.BranchId);
             }
-          }
-      }
-
-    getActivityLogs(AccountId: string): void {
-        this.accountService.getActivityLogs(AccountId)
-            .subscribe(
-                (logs) => {
-                    this.activityLogs = logs;
-                },
-                (error: any) => { // Explicitly type error as 'any'
-                    console.error('Error fetching activity logs:', error);
-                }
-            );
+        }
     }
 
-    getBranchById(BranchId: string): void {
-        this.branchService.getBranchById(BranchId)
-          .subscribe(
-            (branch: Branch) => {
-              
-              this.branch = branch;
+    getActivityLogs(accountId: string): void {
+        this.accountService.getActivityLogs(accountId).subscribe(
+            (logs) => {
+                this.activityLogs = logs;
+                this.filteredLogs = logs; // Initialize filtered logs
             },
-            (error: any) => {
-              console.error('Error fetching branch:', error);
+            (error) => {
+                console.error('Error fetching activity logs:', error);
             }
-          );
+        );
+    }
+
+    handleSearch(): void {
+        const startDate = this.startDate ? new Date(this.startDate).getTime() : null;
+        const endDate = this.endDate ? new Date(this.endDate).getTime() : null;
+
+        this.filteredLogs = this.activityLogs.filter((log) => {
+            const logTimestamp = new Date(log.timestamp).getTime();
+            const matchesSearchTerm = log.actionType.toLowerCase().includes(this.searchTerm.toLowerCase());
+            const matchesStartDate = !startDate || logTimestamp >= startDate;
+            const matchesEndDate = !endDate || logTimestamp <= endDate;
+
+            return matchesSearchTerm && matchesStartDate && matchesEndDate;
+        });
+    }
+
+    getBranchById(branchId: string): void {
+        this.branchService.getBranchById(branchId).subscribe(
+            (branch) => {
+                this.branch = branch;
+            },
+            (error) => {
+                console.error('Error fetching branch:', error);
+            }
+        );
     }
 
     toggleActivityLogs(): void {
         this.showActivityLogs = !this.showActivityLogs;
     }
 
-    toggleBranchInfo() {
+    toggleBranchInfo(): void {
         this.showBranchInfo = !this.showBranchInfo;
-      }
-      isManager(): boolean {
-        return this.account?.role === 'Staff'; // Check account role instead of branch
+    }
+
+    isManager(): boolean {
+        return this.account?.role === 'Staff';
     }
 }

@@ -87,8 +87,8 @@ export class AccountService {
     create(params: any) {
         return this.http.post(baseUrl, params);
     }
-    getActivityLogs(AccountId: string) {
-        return this.http.get<any[]>(`${baseUrl}/${AccountId}/activity`);
+    getActivityLogs(AccountId: string, filters: any = {}): Observable<any[]> {
+        return this.http.post<any[]>(`${baseUrl}/${AccountId}/activity`, filters);
     }
 
     update(id: string, params: any) {
