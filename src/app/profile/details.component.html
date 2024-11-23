@@ -44,9 +44,44 @@
         </button>
     </div>
     <!-- Activity Logs Table -->
-    <div *ngIf="showActivityLogs" class="mt-3">
+    <div *ngIf="showActivityLogs">
+        <!-- Start and End Date Filters -->
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label for="actionType">Action Type Search:</label>
+        <input
+            type="text"
+            id="actionType"
+            class="form-control"
+            placeholder="Search by action type..."
+            [(ngModel)]="searchTerm"
+            (input)="handleSearch()"
+        />
+    </div>
+    <div class="col-md-4">
+        <label for="startDate">Start Date:</label>
+        <input
+            type="datetime"
+            id="startDate"
+            class="form-control"
+            [(ngModel)]="startDate"
+            (change)="handleSearch()"
+        />
+    </div>
+    <div class="col-md-4">
+        <label for="endDate">End Date:</label>
+        <input
+            type="datetime"
+            id="endDate"
+            class="form-control"
+            [(ngModel)]="endDate"
+            (change)="handleSearch()"
+        />
+    </div>
+</div>
+
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Action Type</th>
@@ -55,13 +90,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let log of activityLogs">
+                    <tr *ngFor="let log of filteredLogs">
                         <td>{{ log.actionType }}</td>
                         <td>{{ log.actionDetails }}</td>
-                        <td>{{ log.timestamp | date:'short' }}</td>
+                        <td>{{ log.timestamp | date:'MM/dd/yy, hh:mm a' }}</td>
+                    </tr>
+                    <tr *ngIf="filteredLogs.length === 0">
+                        <td colspan="3" class="text-center">No activity logs found</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
 </div>
