@@ -6,6 +6,7 @@ import { map, finalize } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { Account } from '@app/_models';
+import { ActivityLog , ActivityLogsResponse } from '@app/_models/activity-log.model'; // Ensure this model exists
 
 const baseUrl = `${environment.apiUrl}/accounts`;
 
@@ -87,6 +88,18 @@ export class AccountService {
     create(params: any) {
         return this.http.post(baseUrl, params);
     }
+
+    getAllActivityLogs(): Observable<ActivityLog[]> {
+        return this.http.get<ActivityLogsResponse>(`${baseUrl}/activity-logs`).pipe(
+            map(response => {
+                if (Array.isArray(response)) {
+                    return response as ActivityLog[];
+                }
+                return response.data || [];
+            })
+        );
+    }
+    
     getActivityLogs(AccountId: string, filters: any = {}): Observable<any[]> {
         return this.http.post<any[]>(`${baseUrl}/${AccountId}/activity`, filters);
     }
