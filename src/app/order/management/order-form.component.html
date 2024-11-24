@@ -51,7 +51,18 @@
             </div>
         </div>
     </div>
-
+    <div class="mb-3 col-2">
+        <label class="form-label">Payment</label>
+        <select formControlName="payment" class="form-select" [ngClass]="{ 'is-invalid': submitted && f.payment.errors }">
+            <option value=""></option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="digitalWallet">digitalWallet</option>
+        </select>
+        <div *ngIf="submitted && f.payment.errors" class="invalid-feedback">
+            <div *ngIf="f.payment.errors.required">Payment is required</div>
+        </div>
+    </div>
     <div class="mb-3">
         <button [disabled]="submitting" class="btn btn-primary">
             <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>

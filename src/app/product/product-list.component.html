@@ -24,13 +24,17 @@
                         <h5 class="card-title">Product Name: {{ product.name }}</h5>
                         <p class="card-text">Price: ₱{{ product.price }}</p>
                         <p class="card-text">Status: {{ product.productStatus }}</p>
-                        <button class="btn btn-info" (click)="getAvailabilityInfo(product.id)">
+                        <button class="btn btn-info mb-3" (click)="getAvailabilityInfo(product.id)">
                             Check Availability
                         </button>
+                      
                         <div *ngIf="availabilityInfo && availabilityInfo.product === product.id" class="text-success">
                             <p><strong>Available:</strong> {{ availabilityInfo.available ? 'Yes' : 'No' }}</p>
                             <p><strong>Quantity:</strong> {{ availabilityInfo.quantity }}</p>
                         </div>
+                        <div class="mb-3" *ngIf="isUser">
+                            <a routerLink="/order/management/add" class="btn btn-success">Order</a>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +71,7 @@
                         class="btn btn-sm" 
                         [ngClass]="{
                             'btn-success': product.productStatus === 'deactivated',
-                            'btn-warning': product.productStatus !== 'deactivated'
+                            'btn-danger': product.productStatus !== 'deactivated'
                         }" 
                         [disabled]="deactivatingProductId === product.id || reactivatingProductId === product.id"
                         (click)="toggleDeactivateReactivateProduct(product.id)">
