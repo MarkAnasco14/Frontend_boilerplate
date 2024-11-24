@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { OrderService, AlertService } from '@app/_services';
+import { OrderService, AlertService , SalesService} from '@app/_services';
+import { DailySales } from '@app/_models';
 
 @Component({ templateUrl: 'order-list.component.html' })
 export class OrderListComponent implements OnInit {
     orders?: any[];
 
+    salesData?: DailySales; // For displaying daily sales
+    isSalesModalOpen = false; // Modal toggle
+
     constructor(
         private orderService: OrderService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private salesService: SalesService
     ) { }
 
     ngOnInit() {
@@ -89,4 +94,25 @@ export class OrderListComponent implements OnInit {
                 }
             });
     }
+          // Fetch sales data by date
+    fetchSalesData(date: string) {
+        this.salesService.getDailySales(date)
+            .pipe(first())
+            .subscribe({
+                next: sales => {
+                    this.salesData = sales;
+                    this.isSalesModalOpen = true; // Open the modal
+                },
+                error: () => {
+                    this.alertService.error('Failed to fetch sales data');
+                }
+            });
+    }
+
+    // Close sales modal
+    closeSalesModal() {
+        this.isSalesModalOpen = false;
+        this.salesData = undefined;
+    }
+
 }

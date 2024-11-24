@@ -34,7 +34,8 @@ export class OrderFormComponent implements OnInit {
 
         this.form = this.formBuilder.group({
             productId: ['', Validators.required],
-            quantity: [1, [Validators.required, Validators.min(1)]], // Add quantity field
+            quantity: [1, [Validators.required, Validators.min(1)]],
+            payment: [Validators.required], // Add quantity field
             shippingAddress: ['', Validators.required],
             createdAt: [Date(), Validators.required]
         });

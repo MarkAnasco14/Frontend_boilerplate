@@ -5,4 +5,6 @@ export * from './branch';
 export * from './order';
 export * from './product';
 export * from './inventory';
+export * from './warehouse';
+export * from './sales';
 
