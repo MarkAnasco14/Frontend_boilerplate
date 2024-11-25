@@ -16,7 +16,7 @@
             </div>
             <div class="modal-body" *ngIf="salesData; else noSalesData">
                 <p><strong>Date:</strong> {{ salesData.date }}</p>
-                <p><strong>Total Sales:</strong> ${{ salesData.totalSales }}</p>
+                <p><strong>Total Sales:</strong> ₱{{ salesData.totalSales }}</p>
                 <p><strong>Total Orders:</strong> {{ salesData.totalOrders }}</p>
                 <p><strong>Last Updated:</strong> {{ salesData.lastUpdated | date:'short' }}</p>
             </div>
@@ -37,6 +37,7 @@
             <th>Quantity</th>
             <th>Total Price</th>
             <th>Payment</th>
+            <th>Order Type</th>
             <th>Status</th>
             <th>Date</th>
             <th>Actions</th>
@@ -49,6 +50,7 @@
             <td>{{order.quantity }}</td>
             <td>${{order.totalAmount}}</td>
             <td>{{order.payment}}</td>
+            <td>{{order.salesChannel}}</td>
             <td>{{order.orderStatus}}</td>
             <td>{{order.createdAt | date:'short'}}</td>
             <td>

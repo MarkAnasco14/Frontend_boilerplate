@@ -63,6 +63,17 @@
             <div *ngIf="f.payment.errors.required">Payment is required</div>
         </div>
     </div>
+    <div class="mb-3 col-2">
+        <label class="form-label">Order Type</label>
+        <select formControlName="salesChannel" class="form-select" [ngClass]="{ 'is-invalid': submitted && f.salesChannel.errors }">
+            <option value=""></option>
+            <option value="online">online</option>
+            <option value="walk-in">walk-in</option>
+        </select>
+        <div *ngIf="submitted && f.salesChannel.errors" class="invalid-feedback">
+            <div *ngIf="f.salesChannel.errors.required">Type is required</div>
+        </div>
+    </div>  
     <div class="mb-3">
         <button [disabled]="submitting" class="btn btn-primary">
             <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>

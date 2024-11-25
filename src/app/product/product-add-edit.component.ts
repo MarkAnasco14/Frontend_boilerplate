@@ -29,7 +29,7 @@ export class ProductAddEditComponent implements OnInit {
         this.form = this.formBuilder.group({
             name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
             description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-            price: [0, [Validators.required, Validators.min(0)]],
+            price: [1, [Validators.required, Validators.min(0)]],
             productStatus: ['active', Validators.required], // Dropdown for status
         });
 
