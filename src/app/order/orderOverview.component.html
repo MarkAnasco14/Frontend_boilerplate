@@ -12,7 +12,7 @@
         <label for="orderSelect"><h5>Track order Status:</h5></label>
         <select id="orderSelect" class="form-control" (change)="onOrderSelect($event)">
           <option value="">--Select an Order--</option>
-          <option *ngFor="let order of orders" [value]="order.id">{{order.Product?.name}}</option>
+          <option *ngFor="let order of orders" [value]="order.id">{{order.id}} {{order.Product?.name}} </option>
         </select>
       </div>
 
