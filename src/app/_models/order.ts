@@ -6,6 +6,7 @@ export interface Order {
     quantity: string;
     payment: string;
     shippingAddress: string;
+    salesChannel: string;
     orderStatus: string;
     createdAt: string;
     AcountId: string;

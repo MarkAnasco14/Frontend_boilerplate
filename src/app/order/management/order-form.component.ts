@@ -37,6 +37,7 @@ export class OrderFormComponent implements OnInit {
             quantity: [1, [Validators.required, Validators.min(1)]],
             payment: [Validators.required], // Add quantity field
             shippingAddress: ['', Validators.required],
+            salesChannel: [ Validators.required],
             createdAt: [Date(), Validators.required]
         });
 
