@@ -61,17 +61,18 @@
     <div class="col-md-4">
         <label for="startDate">Start Date:</label>
         <input
-            type="datetime"
+            type="datetime-local"
             id="startDate"
             class="form-control"
             [(ngModel)]="startDate"
             (change)="handleSearch()"
         />
+        
     </div>
     <div class="col-md-4">
         <label for="endDate">End Date:</label>
         <input
-            type="datetime"
+            type="datetime-local"
             id="endDate"
             class="form-control"
             [(ngModel)]="endDate"
@@ -123,8 +124,8 @@
                 <tbody>
                     <tr *ngFor="let log of filteredLogs">
                         <td>{{ log.actionType }}</td>
-                        <td>{{ log.actionDetails }}</td>
-                        <td>{{ log.timestamp | date:'MM/dd/yy, hh:mm a' }}</td>
+                        <td>{{ log.actionDetails }}</td>    
+                        <td>{{ log.timestamp | date:'dd/MM/yy, hh:mm a' | lowercase }}</td>
                     </tr>
                     <tr *ngIf="filteredLogs.length === 0" >
                         <td colspan="3" class="text-center">No activity logs found</td>

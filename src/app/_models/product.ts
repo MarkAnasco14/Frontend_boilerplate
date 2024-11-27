@@ -5,7 +5,7 @@ export interface Product {
     name: string;
     description: string;
     price: string;
-    quantity: string;
+    bulkQuantity: string;
     productStatus: string;
     AcountId: string;  // Ensure this is set correctly when the account is fetched
 }
