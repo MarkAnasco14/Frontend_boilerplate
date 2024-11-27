@@ -30,6 +30,7 @@ export class ProductAddEditComponent implements OnInit {
             name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
             description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
             price: [1, [Validators.required, Validators.min(0)]],
+            bulkQuantity: [1, [Validators.required, Validators.min(0)]],
             productStatus: ['active', Validators.required], // Dropdown for status
         });
 

@@ -28,8 +28,18 @@
                         </div>
                     </div>
                 </div>
+                
 
                 <div class="row">
+                      <!-- quantity -->
+                      <div class="mb-3 col-6">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" formControlName="bulkQuantity" class="form-control" 
+                               [ngClass]="{ 'is-invalid': submitted && f.bulkQuantity.errors }" />
+                        <div *ngIf="submitted && f.bulkQuantity.errors" class="invalid-feedback">
+                            <div *ngIf="f.bulkQuantity.errors.required">bulkQuantity is required</div>
+                            <div *ngIf="f.bulkQuantity.errors.min">bulkQuantity must be a non-negative number</div>
+                        </div>
                     <!-- Price -->
                     <div class="mb-3 col-6">
                         <label class="form-label">Price</label>
@@ -39,6 +49,7 @@
                             <div *ngIf="f.price.errors.required">Price is required</div>
                             <div *ngIf="f.price.errors.min">Price must be a non-negative number</div>
                         </div>
+                       </div>
                     </div>
 
                     <!-- Product Status -->
