@@ -31,26 +31,151 @@
 <div class="app-container d-flex" [ngClass]="{ 'bg-light': account }" [ngStyle]="{ 'padding-top': account?.role === Role.User || account?.role === Role.Staff ? '56px' : '0' }">
     <!-- Sidebar for Admin -->
     <nav *ngIf="account?.role === Role.Admin" 
-         class="navbar navbar-expand-lg navbar-dark bg-dark flex-column p-3"
-         style="position: fixed; top: 0; left: 0; width: 200px; height: 100vh; z-index: 1000;">
-        <div class="navbar-nav flex-column w-100 h-100">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Home</a>
-            <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
-            <a routerLink="/branch" routerLinkActive="active" class="nav-item nav-link">branch</a>
-            <a routerLink="/order" routerLinkActive="active" class="nav-item nav-link">order</a>
-            <a routerLink="/product" routerLinkActive="active" class="nav-item nav-link">product</a>
-            <a routerLink="/inventory" routerLinkActive="active" class="nav-item nav-link">inventory</a>
-            <a routerLink="/warehouse" routerLinkActive="active" class="nav-item nav-link">Warehouse</a>
-            <a routerLink="/admin" routerLinkActive="active" class="nav-item nav-link">Admin</a>
-            
-            <!-- Display Branch Information if available -->
-         
-            <!-- Push logout button to the bottom -->
-            <div class="mt-auto">
-                <button (click)="logout()" class="btn btn-link nav-item nav-link">Logout</button>
-            </div>
-        </div>
-    </nav>
+    class="navbar navbar-expand-lg navbar-dark bg-warning flex-column p-3"
+    style="position: fixed; top: 0; left: 0; width: 215px; height: 100vh; z-index: 1000;">
+   <div class="navbar-nav flex-column w-100 h-100">
+       <!-- Static Logo or Company Name -->
+       <div class="navbar-brand mb-4 text-center">
+           <!-- Logo as an image -->
+           <img src="https://g12express.com/assets/img/g12express_58.png" alt="Company Logo" style="width: 70%; height: auto;">
+           <!-- Or Company Name as text -->
+           <!-- <h4>Company Name</h4> -->
+       </div>
+
+       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Home</a>
+       <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
+       <a routerLink="/branch" routerLinkActive="active" class="nav-item nav-link">Branch</a>
+       <a routerLink="/order" routerLinkActive="active" class="nav-item nav-link">Order</a>
+       <a routerLink="/product" routerLinkActive="active" class="nav-item nav-link">Product</a>
+       <a routerLink="/inventory" routerLinkActive="active" class="nav-item nav-link">Inventory</a>
+       <a routerLink="/warehouse" routerLinkActive="active" class="nav-item nav-link">Warehouse</a>
+       <a routerLink="/admin" routerLinkActive="active" class="nav-item nav-link">Admin</a>
+
+       <!-- Logout Button at the bottom -->
+       <div class="mt-auto">
+        <button (click)="logout()" class="btn btn-link nav-item nav-link logout-button">Logout</button>
+    </div>
+    
+   </div>
+</nav>
+
+
+    <style>
+
+        /* Target the navbar */
+nav.navbar {
+  background-color: #ffff !important; /* Set the background color */
+  color: #333; /* Set text color for better contrast */
+  width: 250px;
+}
+
+/* Target the navbar links */
+nav.navbar .nav-link {
+  color: #333 !important; /* Set link text color */
+  transition: background-color 0.3s, color 0.3s; /* Add smooth transitions */
+}
+
+/* Style active links */
+nav.navbar .nav-link.active {
+  background-color: #007bff; /* Example active background color */
+  color: white !important; /* Example active text color */
+}
+
+/* Style hovered links */
+nav.navbar .nav-link:hover {
+  background-color: #ddd; /* Example hover background color */
+  color: #0056b3 !important; /* Example hover text color */
+}
+
+/* Style the logout button */
+nav.navbar .btn.btn-link {
+  color: #007bff !important; /* Set logout button color */
+}
+
+nav.navbar .btn.btn-link:hover {
+    color: #0056b3 !important;
+}
+
+
+/* Optional: Remove the default Bootstrap link underline */
+nav.navbar .nav-link {
+  text-decoration: none !important;
+}
+
+/* Optional: Add some padding to the links */
+nav.navbar .nav-link {
+  padding: 10px 15px;
+}
+
+/* Optional: Style the navbar brand (if you have one) */
+/* nav.navbar .navbar-brand {
+  color: #333;
+} */
+
+/* Optional: Style the divider between links (if you have one) */
+/* nav.navbar .dropdown-divider {
+  border-top-color: #ddd;
+} */
+
+
+/* Make sure the content below the fixed nav is not hidden */
+body {
+  padding-left: 200px; /* Match the navbar width */
+}
+
+/* Adjust padding for smaller screens if necessary */
+@media (max-width: 992px) { /* Example breakpoint */
+  body {
+    font-family: "Poppins", serif;
+    padding-left: 0;
+  }
+  nav.navbar {
+      width: 100%; /* or auto, depending on your needs */
+      height: auto;
+      position: relative; /* or static */
+  }
+}
+
+/* Style the container for the links (optional) */
+.navbar-nav {
+    display: flex; /* Ensure vertical stacking */
+    flex-direction: column; /* Ensure vertical stacking */
+    height: 100%; /* Take up the full height of the navbar */
+}
+
+.navbar-nav .mt-auto {
+    margin-top: auto; /* Push the logout button to the bottom */
+}
+
+
+
+
+/* Target specific elements if needed */
+nav.navbar,
+nav.navbar .nav-link,
+nav.navbar .btn,
+.app-container { /* Example: Apply to your main container */
+  font-family: 'Poppins', sans-serif;
+}
+
+.logout-button {
+    color: #ea1717; /* Default text color */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    transform: scale(1); /* Default scale */
+    width: 5rem;
+}
+
+.logout-button:hover {
+    color: #61aaf3; /* Text color on hover */
+    background-color: #dc3545; /* Red background on hover */
+    text-decoration: underline; /* Underline text on hover */
+    transform: scale(1.1); /* Scale the button up on hover */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Add shadow for a 3D effect */
+}
+
+
+
+    </style>
 
     <!-- Main content area -->
     <div class="flex-grow-1" [ngStyle]="{ 'margin-left': account?.role === Role.Admin ? '200px' : '0' }">

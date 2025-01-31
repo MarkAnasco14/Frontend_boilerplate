@@ -1,6 +1,38 @@
 ﻿<div class="p-4">
     <div class="container">
-        <h1>Hi {{account?.firstName}}!</h1>
-        <p>You're logged in with Angular 15 & JWT!!</p>
-    </div>
+        <h1>Hello {{ account?.firstName }}!</h1>
+        <p>Have a great day!</p>
+
+        <!-- Dashboard Stats Section -->
+        <div class="row g-4 mt-4">
+            <!-- Card 1: Total Users -->
+            <div class="col-md-4">
+                <div class="card text-white bg-primary shadow-sm p-3">
+                    <h5 class="card-title">Total Users</h5>
+                    <h2 class="fw-bold">1,254</h2>
+                    <p class="card-text">Registered users in the system</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Active Sessions -->
+            <div class="col-md-4">
+                <div class="card text-white bg-success shadow-sm p-3">
+                    <h5 class="card-title">Active Sessions</h5>
+                    <h2 class="fw-bold">320</h2>
+                    <p class="card-text">Currently online users</p>
+                </div>
+            </div>
+
+            <!-- Card 3: New Messages -->
+            <div class="col-md-4">
+                <div class="card text-white bg-warning shadow-sm p-3">
+                    <h5 class="card-title">New Messages</h5>
+                    <h2 class="fw-bold">48</h2>
+                    <p class="card-text">Unread messages</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Table -->
+            </div>
 </div>

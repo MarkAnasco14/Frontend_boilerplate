@@ -2,7 +2,7 @@
     <div class="container">
         <router-outlet></router-outlet>
         <h1>Products</h1>
-        <p>All products from secure (admin only) API endpoint:</p>
+        <!-- <p>All products from secure (admin only) API endpoint:</p> -->
 
         <!-- Button to Open Modal -->
         <div class="container">
@@ -15,6 +15,12 @@
                 </div>
             </div>
         </div>
+
+<!-- SEARCH -->
+      
+
+        <!-- END -->
+        
 
         <!-- Display as Cards for Regular Users, as Table for Admin/Manager -->
         <div *ngIf="isUser" class="row">
@@ -41,52 +47,59 @@
         </div>
 
         <!-- Admin and Manager Table View -->
-        <table class="table table-striped" *ngIf="isAdminManager">
+
+        <div class="mb-3">
+            <label for="search" class="form-label">Search Product</label>
+            <input type="text" id="search" class="form-control" [(ngModel)]="searchQuery" (input)="searchProducts()" placeholder="Enter product name" />
+          </div>
+          
+          <table class="table table-striped" *ngIf="isAdminManager">
             <thead>
-                <tr>
-                    <th style="width:30%">Product Name</th>
-                    <th style="width:20%">Price</th>
-                    <th style="width:20%">Status</th>
-                    <th style="width:30%"></th>
-                    <th style="width:30%"></th>
-                </tr>
+              <tr>
+                <th style="width:30%">Product Name</th>
+                <th style="width:20%">Price</th>
+                <th style="width:20%">Status</th>
+                <th style="width:30%"></th>
+                <th style="width:30%"></th>
+              </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of products">
-                    <td class="align-middle">{{ product.name }}</td>
-                    <td class="align-middle">₱{{ product.price }}</td>
-                    <td class="align-middle">{{ product.productStatus }}</td>
-                    <td *ngIf="isUser">
-                        <button class="btn btn-info me-2" (click)="getAvailabilityInfo(product.id)">
-                            Check Availability
-                        </button>
-                        <div *ngIf="availabilityInfo && availabilityInfo.product === product.id" class="text-success">
-                            <p><strong>Available:</strong> {{ availabilityInfo.available ? 'Yes' : 'No' }}</p>
-                            <p><strong>Quantity:</strong> {{ availabilityInfo.quantity }}</p>
-                        </div>
-                    </td>
-                    <td style="white-space: nowrap" *ngIf="isAdminManager">
-                        <a routerLink="edit/{{ product.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
-                        <button 
-                        class="btn btn-sm" 
-                        [ngClass]="{
-                            'btn-success': product.productStatus === 'deactivated',
-                            'btn-danger': product.productStatus !== 'deactivated'
-                        }" 
-                        [disabled]="deactivatingProductId === product.id || reactivatingProductId === product.id"
-                        (click)="toggleDeactivateReactivateProduct(product.id)">
-                        <span *ngIf="deactivatingProductId === product.id || reactivatingProductId === product.id" class="spinner-border spinner-border-sm"></span>
-                        {{ product.productStatus === 'deactivated' ? 'Reactivate' : 'Deactivate' }}
-                    </button>
-                    </td>
-                </tr>
-                <tr *ngIf="!products || products.length === 0">
-                    <td colspan="4" class="text-center">
-                        <span class="spinner-border spinner-border-lg align-center"></span>
-                    </td>
-                </tr>
+              <tr *ngFor="let product of filteredProducts">
+                <td class="align-middle">{{ product.name }}</td>
+                <td class="align-middle">₱{{ product.price }}</td>
+                <td class="align-middle">{{ product.productStatus }}</td>
+                <td *ngIf="isUser">
+                  <button class="btn btn-info me-2" (click)="getAvailabilityInfo(product.id)">
+                    Check Availability
+                  </button>
+                  <div *ngIf="availabilityInfo && availabilityInfo.product === product.id" class="text-success">
+                    <p><strong>Available:</strong> {{ availabilityInfo.available ? 'Yes' : 'No' }}</p>
+                    <p><strong>Quantity:</strong> {{ availabilityInfo.quantity }}</p>
+                  </div>
+                </td>
+                <td style="white-space: nowrap" *ngIf="isAdminManager">
+                  <a routerLink="edit/{{ product.id }}" class="btn btn-sm btn-primary me-1">Edit</a>
+                  <button 
+                    class="btn btn-sm" 
+                    [ngClass]="{
+                      'btn-success': product.productStatus === 'deactivated',
+                      'btn-danger': product.productStatus !== 'deactivated'
+                    }" 
+                    [disabled]="deactivatingProductId === product.id || reactivatingProductId === product.id"
+                    (click)="toggleDeactivateReactivateProduct(product.id)">
+                    <span *ngIf="deactivatingProductId === product.id || reactivatingProductId === product.id" class="spinner-border spinner-border-sm"></span>
+                    {{ product.productStatus === 'deactivated' ? 'Reactivate' : 'Deactivate' }}
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="!filteredProducts || filteredProducts.length === 0">
+                <td colspan="4" class="text-center">
+                  <span class="spinner-border spinner-border-lg align-center"></span>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
+          
 
     </div>
 </div>
@@ -128,7 +141,25 @@
                     <h5>Description</h5>
                     <p>{{ productDetails.description }}</p>
                 </div>
+
+                <div class="receipt-container" *ngIf="productDetails">
+                  <div id="receipt">
+                      <h2 class="text-center">Product Receipt</h2>
+                      <hr>
+                      <p><strong>Product Name:</strong> {{ productDetails?.name }}</p>
+                      <p><strong>Price:</strong> ₱{{ productDetails?.price }}</p>
+                      <p><strong>Status:</strong> {{ productDetails?.productStatus }}</p>
+                      <p><strong>Description:</strong></p>
+                      <p>{{ productDetails?.description }}</p>
+                      <hr>
+                      <p class="text-center">Thank you for your purchase!</p>
+                  </div>
+                
+                  <button class="btn btn-primary mt-3" (click)="printReceipt()">Print Receipt</button>
+                </div>
             </div>
+            
         </div>
+       
     </div>
 </div>

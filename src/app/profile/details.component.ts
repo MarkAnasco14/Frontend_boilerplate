@@ -4,6 +4,7 @@ import { ActivityLog } from '@app/_models/activity-log.model';
 import { Branch } from '@app/_models';
 
 @Component({
+    selector: 'app-details',
     templateUrl: 'details.component.html'
 })
 export class DetailsComponent implements OnInit {
@@ -22,7 +23,7 @@ export class DetailsComponent implements OnInit {
     adminSearchTerm: string = '';
     adminStartDate: string = '';
     adminEndDate: string = '';
-
+    
     constructor(
         private accountService: AccountService,
         private branchService: BranchService
@@ -30,7 +31,10 @@ export class DetailsComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.account?.id) {
+            // Fetch the activity logs for the logged-in account
             this.getActivityLogs(this.account.id);
+            
+            // Fetch the branch info if the account has a branch ID
             if (this.account.BranchId) {
                 this.getBranchById(this.account.BranchId);
             }

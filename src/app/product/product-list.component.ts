@@ -5,6 +5,7 @@ declare var bootstrap: any;
 import { ProductService, AlertService, AccountService } from '@app/_services';
 import { Product } from '@app/_models';
 
+
 @Component({ templateUrl: 'product-list.component.html' })
 export class ProductListComponent implements OnInit {
     products: Product[] = [];
@@ -20,12 +21,18 @@ export class ProductListComponent implements OnInit {
     isDeleting?: boolean;
     isAdminManager: boolean = false; // Flag to check if the user is a regular user
     isUser: boolean = false; // Flag to check if the user is a regular user
+    filteredProducts: Product[] = [];
+    searchQuery: string = ''; // Store search query
+   
 
     constructor(
         private productService: ProductService,
         private accountService: AccountService,
         private alertService: AlertService
     ) { }
+
+
+
 
     ngOnInit() {
         const account = this.accountService.accountValue;
@@ -38,8 +45,46 @@ export class ProductListComponent implements OnInit {
 
         this.productService.getProduct()
             .pipe(first())
-            .subscribe(products => this.products = products);
+            .subscribe(products => {
+                this.products = products;
+                this.filteredProducts = products; // Initialize filtered products
+            });
     }
+    
+
+    searchProducts() {
+        if (this.searchQuery.trim()) {
+            // Filter products based on search query
+            this.filteredProducts = this.products.filter(product =>
+                product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+        } else {
+            // If search query is empty, show all products
+            this.filteredProducts = this.products;
+        }
+    }
+
+    // print
+
+    printReceipt() {
+        const printContents = document.getElementById('receipt')?.innerHTML;
+        if (printContents) {
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            window.location.reload(); // Reload the page to restore the original content
+        } else {
+            this.alertService.error('Unable to print receipt.');
+        }
+    }
+    
+    
+    
+
+    
+    // Existing methods...
+
 
     // Toggle activation/deactivation of a product
     toggleDeactivateReactivateProduct(id: string) {
