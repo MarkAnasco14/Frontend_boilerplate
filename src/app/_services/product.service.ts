@@ -25,6 +25,11 @@ export class ProductService {
     }
 
     createProduct(params: {
+        waybillno: string;
+         supplier: string;
+         company: string;
+         acceptedwarehouse: string;
+         receivedby: string;
         name: string;
         description: string;
         price: number;

@@ -39,7 +39,7 @@ export class ProductListComponent implements OnInit {
 
         const Admin = 'Admin';
         const Staff = 'Staff';
-
+    
         this.isAdminManager = account?.role === Admin || account?.role === Staff;
         this.isUser = account?.role === 'User';
 
@@ -50,6 +50,10 @@ export class ProductListComponent implements OnInit {
                 this.filteredProducts = products; // Initialize filtered products
             });
     }
+
+   
+
+
     
 
     searchProducts() {

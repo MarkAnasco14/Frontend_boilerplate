@@ -1,6 +1,17 @@
 ﻿<h1>Update Profile</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row">
+<!-- profile picture upload -->
+<!-- <div class="mb-3 col-12 text-center">
+    <label class="form-label">Profile Picture</label>
+    <div class="d-flex flex-column align-items-center">
+        <img *ngIf="imagePreview" [src]="imagePreview" alt="Profile Preview" class="rounded-circle" width="120" height="120">
+        <input type="file" (change)="onFileSelected($event)" class="form-control mt-2" accept="image/*">
+    </div>
+</div> -->
+
+
+
         <div class="mb-3 col-2">
             <label class="form-label">Title</label>
             <select formControlName="title" class="form-select" [ngClass]="{ 'is-invalid': submitted && f.title.errors }">

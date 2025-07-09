@@ -1,4 +1,4 @@
-﻿import { NgModule, APP_INITIALIZER } from '@angular/core';
+﻿﻿import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -25,6 +25,7 @@ import { HomeComponent } from './home';
         AppComponent,
         AlertComponent,
         HomeComponent,
+        
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },

@@ -1,7 +1,7 @@
-﻿<h1 class="text-center mb-4">My Profile</h1>
+﻿<!-- <h1 class="text-center mb-3">My Profile</h1> -->
 
 <!-- Account Details Section -->
-<h2>Account Details</h2>
+<h2 class="accountdetails">Account Details</h2>
 <div *ngIf="account" class="card p-3 mb-4">
     <div class="mb-3">
         <strong>Name: </strong> {{ account.firstName }} {{ account.lastName }}<br />
@@ -206,3 +206,14 @@
         </div>
 </div>
 </div>
+
+<style>
+    .accountdetails{
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .btn btn-success{
+        font-size: 14px;
+    }
+</style>
